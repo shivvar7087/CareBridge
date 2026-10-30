@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CareBridge AI | Project Overview</title>
+  <style>
+    @page { size: A4; margin: 18mm 18mm 20mm; @top-left { content: "CAREBRIDGE AI  /  PROJECT PROFILE"; color: #718793; font: bold 7pt Arial, sans-serif; letter-spacing: 1pt; } @bottom-right { content: "CAREBRIDGE AI  |  " counter(page); color: #718793; font: 8pt Arial, sans-serif; } }
+    @page:first { margin: 0; @top-left { content: none; } @bottom-right { content: none; } }
+    :root { --navy:#123247; --deep:#0b2638; --teal:#16a99b; --ink:#263e4b; --muted:#667d88; --line:#d9e5e8; --pale:#eaf6f4; --blue:#edf4f8; --gold:#fbf3df; --coral:#e28a68; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font:10pt/1.52 Arial, Helvetica, sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    h1,h2,h3 { color:var(--navy); line-height:1.2; margin:0; }
+    h1 { font-size:35pt; letter-spacing:-1pt; }
+    h2 { font-size:20pt; margin:0 0 13pt; padding-bottom:8pt; border-bottom:1px solid var(--line); position:relative; }
+    h2:after { content:""; position:absolute; left:0; bottom:-1px; width:38mm; height:3px; background:var(--teal); }
+    h3 { font-size:12pt; margin:13pt 0 5pt; }
+    p { margin:5pt 0 9pt; }
+    ul,ol { margin:5pt 0 10pt; padding-left:19pt; }
+    li { margin:3pt 0; }
+    strong { color:var(--navy); }
+    .cover { height:297mm; display:flex; flex-direction:column; justify-content:space-between; page-break-after:always; padding:19mm 19mm 17mm; overflow:hidden; color:#fff; background:radial-gradient(circle at 88% 30%, #1a5968 0, #14394e 30%, #0b2638 72%); position:relative; }
+    .cover:before { content:""; position:absolute; width:145mm; height:145mm; border:1px solid rgba(255,255,255,.10); border-radius:50%; right:-70mm; top:31mm; }
+    .cover:after { content:""; position:absolute; width:103mm; height:103mm; border:1px solid rgba(22,169,155,.3); border-radius:50%; right:-47mm; top:53mm; }
+    .brand-row { display:flex; align-items:center; gap:9pt; z-index:1; }
+    .logo-mark { width:28pt; height:28pt; border:1px solid rgba(255,255,255,.28); background:rgba(22,169,155,.18); border-radius:8pt; display:grid; place-items:center; }
+    .brand { color:#fff; font-weight:bold; letter-spacing:2pt; font-size:10pt; }
+    .brand-sub { color:#9fb8c2; font-size:7pt; letter-spacing:1.4pt; margin-left:5pt; }
+    .cover-main { display:grid; grid-template-columns:1.3fr .7fr; gap:3mm; align-items:center; margin-top:8mm; z-index:1; }
+    .cover-copy { padding-right:4mm; }
+    .cover-chip { display:inline-block; border:1px solid rgba(112,223,208,.5); border-radius:12pt; padding:5pt 9pt; color:#8ce0d5; font-size:8pt; font-weight:bold; letter-spacing:1pt; margin-bottom:14pt; }
+    .cover h1 { max-width:112mm; margin:5pt 0 13pt; color:#fff; font-size:37pt; }
+    .cover h1 span { color:#75d8cc; }
+    .subtitle { color:#c6d6dc; font-size:13pt; max-width:101mm; line-height:1.48; }
+    .cover-art { width:100%; max-width:67mm; justify-self:end; filter:drop-shadow(0 16px 24px rgba(0,0,0,.16)); }
+    .cover-bottom { z-index:1; }
+    .cover-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:7pt; margin-bottom:13pt; }
+    .cover-kpi { border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.07); border-radius:7pt; padding:9pt 10pt; }
+    .cover-kpi strong { color:#fff; display:block; font-size:10pt; margin-bottom:2pt; }
+    .cover-kpi span { color:#a9c0c8; font-size:7.5pt; }
+    .cover-band { background:rgba(22,169,155,.15); border:1px solid rgba(117,216,204,.33); color:#d4e7e9; padding:12pt 14pt; border-radius:6pt; font-size:9.5pt; line-height:1.5; }
+    .cover-band strong { color:#84e0d4; }
+    .meta { color:#95adb8; font-size:8pt; margin-top:10pt; }
+    .section { page-break-before:always; }
+    .kicker { text-transform:uppercase; color:var(--teal); letter-spacing:1.4pt; font-size:8pt; font-weight:bold; margin-bottom:6pt; }
+    .lead { font-size:12pt; color:#365464; line-height:1.5; }
+    .callout { padding:12pt 14pt; margin:11pt 0 14pt; border-left:4px solid var(--teal); background:var(--pale); border-radius:0 5pt 5pt 0; }
+    .warning { border-left-color:#d39a42; background:var(--gold); }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:9pt; margin:10pt 0; }
+    .card { border:1px solid var(--line); background:linear-gradient(145deg,#fff,#f8fbfc); border-radius:7pt; padding:11pt 12pt; break-inside:avoid; box-shadow:0 2px 5px rgba(18,50,71,.04); }
+    .card h3 { margin-top:0; }
+    .tag { display:inline-block; border-radius:8pt; padding:2pt 7pt; background:var(--blue); color:#34586c; font-size:8pt; font-weight:bold; margin:1pt 2pt 3pt 0; }
+    table { width:100%; border-collapse:collapse; margin:8pt 0 12pt; font-size:9pt; }
+    th { text-align:left; background:var(--navy); color:white; font-weight:bold; padding:8pt 9pt; }
+    td { vertical-align:top; border-bottom:1px solid var(--line); padding:7pt 9pt; }
+    tbody tr:nth-child(even) { background:#f5f9fa; }
+    tr { break-inside:avoid; }
+    .flow { display:flex; align-items:stretch; gap:5pt; margin:12pt 0; }
+    .step { flex:1; min-height:55pt; padding:9pt 7pt; background:var(--blue); border:1px solid #dfe9ed; border-radius:6pt; text-align:center; font-size:8.5pt; }
+    .arrow { align-self:center; color:var(--teal); font-weight:bold; }
+    .small { color:var(--muted); font-size:8.5pt; }
+    .mono { font-family:Consolas, monospace; font-size:8.5pt; color:#315b68; }
+    .footer-note { position:fixed; bottom:-13mm; left:0; right:0; border-top:1px solid var(--line); padding-top:4pt; color:#68808d; font-size:7.5pt; }
+    .no-break { break-inside:avoid; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="brand-row">
+      <div class="logo-mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 16c4-8 14-8 18 0M5 16h14M8 16v3m8-3v3" stroke="#75d8cc" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="16" r="1.2" fill="#fff"/><circle cx="20" cy="16" r="1.2" fill="#fff"/></svg></div>
+      <div class="brand">CAREBRIDGE AI</div><div class="brand-sub">POST-DISCHARGE CARE COORDINATION</div>
+    </div>
+    <div class="cover-main">
+      <div class="cover-copy">
+        <div class="cover-chip">PROJECT PROFILE  /  2026</div>
+        <h1>Care,<br>connected.<br><span>At every step.</span></h1>
+        <p class="subtitle">A patient and caregiver workspace for organizing post-discharge instructions, tasks, reports, and access barriers.</p>
+      </div>
+      <svg class="cover-art" viewBox="0 0 250 300" fill="none" role="img" aria-label="Care network illustration">
+        <circle cx="128" cy="146" r="104" fill="#fff" fill-opacity=".035" stroke="#9bded7" stroke-opacity=".32"/>
+        <circle cx="128" cy="146" r="77" stroke="#9bded7" stroke-opacity=".18"/>
+        <path d="M46 167c19-49 47-74 82-74s64 25 82 74" stroke="#58c8bb" stroke-width="5" stroke-linecap="round"/>
+        <path d="M46 167h164M76 167v24m34-24v24m36-24v24m33-24v24" stroke="#d7eeeb" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="128" cy="92" r="11" fill="#f2b76b"/><circle cx="46" cy="167" r="8" fill="#75d8cc"/><circle cx="210" cy="167" r="8" fill="#75d8cc"/>
+        <rect x="66" y="213" width="124" height="42" rx="10" fill="#fff" fill-opacity=".09" stroke="#fff" stroke-opacity=".2"/>
+        <circle cx="86" cy="234" r="7" fill="#75d8cc"/><path d="M105 229h65M105 239h48" stroke="#d7e6e8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M128 68v-22m-11 11h22" stroke="#f2b76b" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-kpis">
+        <div class="cover-kpi"><strong>One shared journey</strong><span>Tasks, appointments, and follow-up</span></div>
+        <div class="cover-kpi"><strong>Patient-reviewed AI</strong><span>Drafts stay under patient control</span></div>
+        <div class="cover-kpi"><strong>Support with boundaries</strong><span>Caregiver access follows assignment</span></div>
+      </div>
+      <div class="cover-band"><strong>Project overview</strong> &nbsp; Product, architecture, workflows, safeguards, and delivery notes. Working MVP prepared October 30, 2026.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">01 / Executive summary</div>
+    <h2>What the project does</h2>
+    <p class="lead">CareBridge AI is a web application for patients and caregivers coordinating the practical work that follows a hospital visit. It brings healthcare journey tasks, appointments, reports, documents, caregiver assignments, notifications, and access barriers into one workspace.</p>
+    <div class="callout"><strong>Clinical boundary:</strong> CareBridge AI is an organization and coordination tool. It does not diagnose, prescribe, or change a clinician's instructions. AI-generated extraction is a draft for patient review, and clinical wording is not editable by caregivers.</div>
+    <div class="grid">
+      <div class="card"><h3>For patients</h3><p>See the journey at a glance, track due and completed tasks, upload and review documents, manage reports, invite caregivers, assign selected tasks, and record barriers.</p></div>
+      <div class="card"><h3>For caregivers</h3><p>Accept an invitation, view tasks explicitly assigned to them, update task status, and see assignment history. Patient-only records and unassigned work remain outside their view.</p></div>
+      <div class="card"><h3>For the care journey</h3><p>Keep instructions connected to their source document, distinguish administrative progress from medical readiness, and make follow-up work easier to coordinate.</p></div>
+      <div class="card"><h3>For deployment</h3><p>Run locally with SQLite, or configure PostgreSQL for a hosted service. The React client and FastAPI API can be deployed separately.</p></div>
+    </div>
+    <h3>Product principles</h3>
+    <ul>
+      <li><strong>Patient review comes first:</strong> uploaded instructions do not silently become confirmed tasks.</li>
+      <li><strong>Access follows relationships:</strong> caregivers see work only after invitation and assignment.</li>
+      <li><strong>Administrative readiness stays administrative:</strong> a report checklist is not a clinical clearance indicator.</li>
+      <li><strong>Fallbacks are explicit:</strong> without an AI provider key, analysis is labeled simulated and does not invent instructions.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="kicker">02 / Users and experience</div>
+    <h2>Roles and main screens</h2>
+    <table>
+      <thead><tr><th>Role</th><th>Capabilities</th><th>Access boundary</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Patient</strong></td><td>Own profile, dashboard, journey, tasks, document uploads and review, report checklist, caregiver links, barriers, and notifications.</td><td>Can manage their own records and choose which journey tasks to share.</td></tr>
+        <tr><td><strong>Caregiver</strong></td><td>Assigned tasks, status updates, and task assignment history in a shared journey.</td><td>Must be linked through an invitation; cannot edit clinical task wording or access another patient's records.</td></tr>
+        <tr><td><strong>Demo user</strong></td><td>Fictional patient and caregiver accounts with sample journey content.</td><td>Sample data only; do not enter real patient information into the demo workspace.</td></tr>
+      </tbody>
+    </table>
+    <div class="grid">
+      <div class="card"><h3>Dashboard</h3><p>Journey progress, task status, overdue administrative work, upcoming appointments, report availability, recent notifications, and caregiver activity.</p></div>
+      <div class="card"><h3>Healthcare journey</h3><p>A timeline of tasks with dates and statuses, supporting a simple view of the next steps after discharge.</p></div>
+      <div class="card"><h3>Documents</h3><p>Upload supported files, inspect extracted details, provide consent for AI analysis, review the draft, and explicitly confirm or reject suggested actions.</p></div>
+      <div class="card"><h3>Tasks and reports</h3><p>Create and update tasks, view task history, track required reports, and associate verified reports with supporting documents.</p></div>
+      <div class="card"><h3>Caregivers</h3><p>Invite caregivers, assign or remove work, and review who has responsibility for a selected task.</p></div>
+      <div class="card"><h3>Barriers and notifications</h3><p>Record an access barrier and follow-up notes; review reminders and mark notifications as read.</p></div>
+    </div>
+    <h3>Typical patient flow</h3>
+    <div class="flow">
+      <div class="step"><strong>1. Sign in</strong><br>Patient opens their workspace.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>2. Add source</strong><br>Upload a discharge or care document.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>3. Review draft</strong><br>Inspect extracted details and task suggestions.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>4. Confirm</strong><br>Patient approves supported items.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>5. Coordinate</strong><br>Track work and share selected tasks.</div>
+    </div>
+    <p class="small">The interface has routes for Dashboard, Journey, Documents, Tasks, Reports, Caregivers, Barriers, Notifications, and Settings.</p>
+  </section>
+
+  <section class="section">
+    <div class="kicker">03 / Capabilities</div>
+    <h2>Functional scope</h2>
+    <table>
+      <thead><tr><th>Area</th><th>What is implemented</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Identity and profiles</strong></td><td>Patient and caregiver registration, login, authenticated profile retrieval, JWT access tokens, and patient profile management.</td></tr>
+        <tr><td><strong>Journey and tasks</strong></td><td>Create, view, edit, complete, delete, assign, and track tasks. Task history records caregiver assignment changes. Overdue work is surfaced in the dashboard.</td></tr>
+        <tr><td><strong>Documents</strong></td><td>PDF, JPEG, and PNG upload with content type, file signature, ownership, and size validation. Default maximum size is 10 MB. Preview requires an authenticated owner.</td></tr>
+        <tr><td><strong>Extraction and confirmation</strong></td><td>PDF text extraction and image OCR adapter; structured AI extraction can run through an OpenAI-compatible provider. Analysis requires consent. Suggestions remain unverified until patient confirmation.</td></tr>
+        <tr><td><strong>Reports</strong></td><td>Track required reports and their availability. Verification requires a supporting document. Readiness reflects document availability only.</td></tr>
+        <tr><td><strong>Caregiver sharing</strong></td><td>Invitation-based relationships and task-level assignments. Caregivers can update task status but cannot edit clinical task instructions.</td></tr>
+        <tr><td><strong>Notifications</strong></td><td>In-app reminders with deduplication and per-user visibility; external email, SMS, and WhatsApp delivery are not implemented.</td></tr>
+        <tr><td><strong>Access barriers</strong></td><td>Create, view, and update operational barriers that affect access to care, including status and follow-up notes.</td></tr>
+      </tbody>
+    </table>
+    <h3>Document review safeguards</h3>
+    <ol>
+      <li>The user uploads a supported file. The API checks extension, MIME type, file signature, size, and ownership.</li>
+      <li>Text extraction and analysis produce a reviewable record. AI analysis is not called until the patient has provided explicit consent.</li>
+      <li>Proposed instructions are shown with their source context. Confirmation checks that task wording is supported by the source content.</li>
+      <li>Confirmed suggestions are still labeled as needing verification where a clinician should review them.</li>
+    </ol>
+    <div class="callout warning"><strong>OCR boundary:</strong> text-based PDFs are supported through PyMuPDF. Image OCR requires the Python Tesseract adapter and a system Tesseract executable. Scanned PDFs currently return an actionable unsupported-OCR response.</div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">04 / Technical architecture</div>
+    <h2>How the application is built</h2>
+    <div class="grid">
+      <div class="card"><h3>Frontend</h3><p>React 18 with Vite, React Router, Axios, Tailwind CSS, Recharts, and Lucide icons. The frontend is a single-page application with responsive views and protected patient/caregiver routes.</p></div>
+      <div class="card"><h3>Backend</h3><p>FastAPI exposes JSON REST endpoints. SQLAlchemy handles persistence; Pydantic schemas validate API data. Alembic migrations support controlled schema updates.</p></div>
+      <div class="card"><h3>Database</h3><p>SQLite is the local default. PostgreSQL is configured through <span class="mono">DATABASE_URL</span>; hosted deployment is described around Render and a managed PostgreSQL database.</p></div>
+      <div class="card"><h3>AI and OCR</h3><p>AI provider settings remain server-side. Structured extraction uses an OpenAI-compatible endpoint. PDF text extraction and optional image OCR are separate adapters.</p></div>
+    </div>
+    <h3>Request flow</h3>
+    <div class="flow">
+      <div class="step"><strong>React client</strong><br>Page action or data request.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>Axios API client</strong><br>Base URL and bearer token.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>FastAPI route</strong><br>Authentication and validation.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>Service and ORM</strong><br>Rules, audit, and database work.</div><div class="arrow">&gt;</div>
+      <div class="step"><strong>JSON response</strong><br>Client updates the page.</div>
+    </div>
+    <h3>Core data records</h3>
+    <table>
+      <thead><tr><th>Record family</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Users and profiles</td><td>Identity, role, demo flag, and patient-specific contact/profile fields.</td></tr>
+        <tr><td>Caregiver relationships</td><td>Invitation, linked caregiver, and journey-sharing relationship.</td></tr>
+        <tr><td>Documents and extracted data</td><td>Uploaded file metadata, extracted text, analysis result, consent, and confirmation state.</td></tr>
+        <tr><td>Healthcare journeys and tasks</td><td>Patient journey, due dates, statuses, source document references, assignments, and history.</td></tr>
+        <tr><td>Reports and notifications</td><td>Required report checklist, document association, notification ownership, and reminder dedupe key.</td></tr>
+        <tr><td>Barriers and audit logs</td><td>Access-related follow-up records and a record of sensitive application actions.</td></tr>
+      </tbody>
+    </table>
+    <h3>API surface</h3>
+    <p class="small">Main route groups include <span class="mono">/api/auth</span>, <span class="mono">/api/patients</span>, <span class="mono">/api/dashboard</span>, <span class="mono">/api/journey</span>, <span class="mono">/api/tasks</span>, <span class="mono">/api/documents</span>, <span class="mono">/api/reports</span>, <span class="mono">/api/caregivers</span>, <span class="mono">/api/notifications</span>, and <span class="mono">/api/barriers</span>. The service root and <span class="mono">/api/health</span> provide API information and health status.</p>
+  </section>
+
+  <section class="section">
+    <div class="kicker">05 / Security and responsible use</div>
+    <h2>Access, privacy, and clinical boundaries</h2>
+    <div class="grid">
+      <div class="card"><h3>Authentication</h3><p>Passwords are stored as scrypt hashes. API sessions use signed, expiring JWTs. The secret key must be replaced with a strong value outside demo mode.</p></div>
+      <div class="card"><h3>Authorization</h3><p>Patient routes are scoped to the signed-in patient's records. Caregiver access requires an invitation and task assignment. Notification and document access are scoped to the owner.</p></div>
+      <div class="card"><h3>File access</h3><p>Uploads have type, signature, and size checks. Stored files are not exposed through a public URL; previews require authenticated ownership checks.</p></div>
+      <div class="card"><h3>AI handling</h3><p>Provider credentials stay on the backend. Analysis requires consent and remains a draft. When no key is set, simulated mode is clearly labeled and does not generate medical tasks.</p></div>
+    </div>
+    <h3>Information that should not be inferred</h3>
+    <ul>
+      <li>A completed report checklist does not mean a patient is medically ready for treatment or discharge.</li>
+      <li>A model-generated explanation is not a diagnosis, recommendation, prescription, or substitute for a clinician.</li>
+      <li>In-app notifications do not imply an email, SMS, or messaging service sent an alert.</li>
+    </ul>
+    <div class="callout warning"><strong>Production readiness:</strong> the included workspace is an MVP and uses fictional sample data. Before real patient use, configure private durable file storage, encryption, access controls, retention and deletion rules, monitoring, backups, provider terms, and applicable privacy/legal review. Do not use the demo workspace for real patient information.</div>
+  </section>
+
+  <section class="section">
+    <div class="kicker">06 / Running and deploying</div>
+    <h2>Development and delivery</h2>
+    <h3>Local setup</h3>
+    <ol>
+      <li>Use Python 3.11 or newer and Node.js 18 or newer.</li>
+      <li>In <span class="mono">backend/</span>, create and activate a virtual environment, install <span class="mono">requirements.txt</span>, and copy <span class="mono">.env.example</span> to <span class="mono">.env</span>.</li>
+      <li>Start the API with <span class="mono">uvicorn app.main:app --reload --port 8000</span>. It serves API information at <span class="mono">http://localhost:8000/</span>, health at <span class="mono">/api/health</span>, and API docs at <span class="mono">/docs</span>.</li>
+      <li>In <span class="mono">frontend/</span>, install npm dependencies and run <span class="mono">npm run dev</span>. The client is served at <span class="mono">http://localhost:5173</span> and calls the API at <span class="mono">http://localhost:8000/api</span>.</li>
+    </ol>
+    <h3>Configuration</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">DATABASE_URL</td><td>SQLite by default; PostgreSQL URL for hosted use.</td></tr>
+        <tr><td class="mono">SECRET_KEY</td><td>JWT signing secret; use a strong generated secret outside demo mode.</td></tr>
+        <tr><td class="mono">DEMO_MODE</td><td>Seeds fictional accounts and sample journey content when enabled.</td></tr>
+        <tr><td class="mono">CORS_ORIGINS</td><td>Browser origins permitted to call the API. Local demo mode supports localhost and 127.0.0.1 on port 5173.</td></tr>
+        <tr><td class="mono">AI_API_KEY / AI_MODEL / AI_BASE_URL</td><td>Optional server-side structured extraction provider configuration.</td></tr>
+        <tr><td class="mono">UPLOAD_DIR / MAX_UPLOAD_MB</td><td>Local upload storage path and size ceiling.</td></tr>
+        <tr><td class="mono">VITE_API_URL</td><td>Frontend API base URL, including the <span class="mono">/api</span> suffix.</td></tr>
+      </tbody>
+    </table>
+    <h3>Deployment model</h3>
+    <p>The root Render blueprint defines the Python API service, a PostgreSQL database, and a pre-deploy Alembic migration. The React client can be deployed to Vercel with its SPA rewrite and a <span class="mono">VITE_API_URL</span> pointing at the deployed API. The backend CORS list must include the deployed frontend origin.</p>
+    <p>Uploaded documents use local storage by default. A production deployment should use private durable object storage and verify backup, retention, restore, and access-control behavior before enabling real document uploads.</p>
+  </section>
+
+  <section class="section">
+    <div class="kicker">07 / Verification and roadmap</div>
+    <h2>Current status</h2>
+    <table>
+      <thead><tr><th>Verification</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Backend API suite</td><td>14 tests passed, including authentication, patient scoping, caregiver assignments, upload validation, report verification, simulated AI, CORS configuration, and legacy SQLite schema migration.</td></tr>
+        <tr><td>Frontend unit suite</td><td>2 tests passed for dashboard calculations.</td></tr>
+        <tr><td>Production frontend build</td><td>Vite build completed successfully.</td></tr>
+        <tr><td>Local HTTP smoke check</td><td>Frontend and its modules returned successfully. Login, dashboard, journey, tasks, report readiness, notifications, caregivers, and barriers returned HTTP 200. CORS preflight passed for both local hostnames.</td></tr>
+        <tr><td>Not exercised in this environment</td><td>Hosted PostgreSQL/Alembic deployment, live AI provider response, and actual Tesseract OCR processing.</td></tr>
+      </tbody>
+    </table>
+    <h3>Practical next steps</h3>
+    <ol>
+      <li>Choose and document a production privacy and data-retention model before onboarding real users.</li>
+      <li>Replace local file storage with private durable object storage and verify authorization for every file operation.</li>
+      <li>Exercise Alembic migrations against a managed PostgreSQL staging database and test backup restoration.</li>
+      <li>Run provider-specific AI evaluation using representative, de-identified documents and review false-positive and missed-instruction behavior.</li>
+      <li>Install and validate Tesseract for supported image workflows, or define an explicit scanned-PDF OCR path.</li>
+      <li>Add operational monitoring, rate limiting, account recovery, and production deployment checks as appropriate.</li>
+    </ol>
+    <div class="callout"><strong>Project summary:</strong> CareBridge AI provides a working foundation for organizing post-discharge coordination. Its strongest product boundary is the separation between clinician source material, AI-assisted drafts, and patient-confirmed tasks. Production use depends on completing privacy, storage, operations, and clinical workflow validation.</div>
+    <p class="small">Repository structure: <span class="mono">backend/</span> contains the FastAPI API, database models, services, migrations, and tests; <span class="mono">frontend/</span> contains the React dashboard and pages. See <span class="mono">README.md</span> for the current setup instructions.</p>
+  </section>
+  <div class="footer-note">CareBridge AI | Project overview | Fictional demo information only</div>
+</body>
+</html>
