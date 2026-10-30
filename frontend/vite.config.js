@@ -2,7 +2,17 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   esbuild: { jsx: 'automatic', jsxImportSource: 'react' },
-  server: { host: 'localhost', port: 5173, strictPort: true },
+  server: {
+    host: 'localhost',
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {

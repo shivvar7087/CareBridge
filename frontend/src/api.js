@@ -8,6 +8,11 @@ api.interceptors.request.use((config) => {
 })
 
 export function errorMessage(error) {
+  if (!error?.response) {
+    if (error?.code === 'ERR_NETWORK' || error?.message === 'Network Error') {
+      return 'Cannot connect to backend server. Please make sure the backend API is running on port 8000.'
+    }
+  }
   return error?.response?.data?.detail || error?.message || 'Something went wrong. Please try again.'
 }
 export default api

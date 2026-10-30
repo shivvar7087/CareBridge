@@ -3,15 +3,15 @@ from pathlib import Path
 
 
 def _read_local_env():
-    env_file = Path(".env")
-    if not env_file.is_file():
-        return
-    for line in env_file.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+    for candidate in (Path(".env"), Path("backend/.env"), Path(__file__).resolve().parents[2] / ".env"):
+        if candidate.is_file():
+            for line in candidate.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+            break
 
 
 _read_local_env()
@@ -35,7 +35,14 @@ class Settings:
     def allowed_origins(self) -> list[str]:
         origins = {origin.strip() for origin in self.cors_origins.split(",") if origin.strip()}
         if self.demo_mode:
-            origins.update({"http://localhost:5173", "http://127.0.0.1:5173"})
+            origins.update({
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "http://localhost:5174",
+                "http://127.0.0.1:5174",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+            })
         return sorted(origins)
 
 

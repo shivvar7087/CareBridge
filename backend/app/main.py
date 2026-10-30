@@ -1,4 +1,11 @@
+import sys
+from pathlib import Path
 from contextlib import asynccontextmanager
+
+# Ensure backend directory is in sys.path so 'app' is always discoverable
+_backend_dir = str(Path(__file__).resolve().parents[1])
+if _backend_dir not in sys.path:
+    sys.path.insert(0, _backend_dir)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,7 +35,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=settings.app_name, version="0.1.0", description="Post-discharge journey coordination API", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=settings.allowed_origins, allow_credentials=True,
-                   allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"], allow_headers=["Authorization", "Content-Type"])
+                   allow_methods=["*"], allow_headers=["*"])
 
 for router in (auth.router, patients.router, dashboard.router, documents.router, journey.router, tasks.router,
                caregivers.router, reports.router, notifications.router, barriers.router):
