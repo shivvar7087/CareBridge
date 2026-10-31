@@ -2409,3 +2409,149 @@ h3{font-size:17px}
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   Prescription Schedule Manager Modal
+   ========================================================================== */
+
+.card-head-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.med-schedule-modal {
+  max-width: 680px;
+  width: 95%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+.med-schedule-modal .modal-head {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.med-modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.med-modal-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13.5px;
+  color: #475569;
+}
+
+.med-schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.med-item-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: all 0.15s;
+}
+
+.med-item-card:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(15, 37, 55, 0.04);
+}
+
+.med-item-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.med-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.med-name-lockup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.med-name-lockup strong {
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.med-dosage-text {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.med-inst-text {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.med-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-danger-icon:hover {
+  color: #dc2626 !important;
+  background: #fee2e2 !important;
+}
+
+.med-edit-card {
+  background: #ffffff;
+  border: 1.5px solid #0d9488;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.med-edit-card.add-card {
+  border: 1.5px dashed #0d9488;
+  background: #f0fdfa;
+}
+
+.edit-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #0f766e;
+}
+
+.med-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}

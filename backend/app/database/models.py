@@ -167,3 +167,18 @@ class AuditLog(Base):
     entity_type: Mapped[str] = mapped_column(String(80))
     entity_id: Mapped[str] = mapped_column(String(80))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
+
+
+class PatientMedication(Base):
+    __tablename__ = "patient_medications"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    patient_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    name: Mapped[str] = mapped_column(String(160))
+    dosage: Mapped[str] = mapped_column(String(80))
+    time_slot: Mapped[str] = mapped_column(String(40), default="Morning")
+    time_label: Mapped[str] = mapped_column(String(40), default="08:00 AM")
+    instructions: Mapped[str] = mapped_column(Text, default="")
+    indication: Mapped[str] = mapped_column(String(160), default="")
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now, onupdate=utc_now)

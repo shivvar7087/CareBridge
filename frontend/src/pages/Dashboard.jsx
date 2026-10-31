@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import {
   Activity, ArrowRight, CalendarDays, Check, CheckCircle2, ChevronRight,
   Clock3, FileCheck2, FileText, Flame, HeartHandshake, ListTodo, Pill,
-  Plus, ShieldAlert, Sparkles, TriangleAlert, UserRound
+  Plus, Settings, ShieldAlert, Sparkles, TriangleAlert, UserRound
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import api, { errorMessage } from '../api'
 import { Card, EmptyState, Loading, PageHeading, StatusBadge } from '../components/UI'
 import { getNonZeroStatusRows, getProgressPercentage } from '../utils/dashboard'
+import MedicationScheduleModal from '../components/MedicationScheduleModal'
 
 const colors = ['#159b8c', '#90b7d4', '#79b5a0', '#e89166', '#b7a6df']
 const dateLabel = (value) => value ? new Date(`${value}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Date to be confirmed'
@@ -24,16 +25,21 @@ function getDynamicGreeting(name) {
 export default function Dashboard() {
   const [data, setData] = useState(null)
   const [medData, setMedData] = useState(null)
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false)
   const [error, setError] = useState('')
+
+  const loadMedications = () => {
+    api.get('/copilot/medications')
+      .then(({ data: mResponse }) => setMedData(mResponse))
+      .catch(() => {})
+  }
 
   useEffect(() => {
     api.get('/dashboard')
       .then(({ data: response }) => setData(response))
       .catch((e) => setError(errorMessage(e)))
 
-    api.get('/copilot/medications')
-      .then(({ data: mResponse }) => setMedData(mResponse))
-      .catch(() => {})
+    loadMedications()
   }, [])
 
   async function toggleMedication(medId, currentStatus) {
@@ -125,12 +131,21 @@ export default function Dashboard() {
             <div className="eyebrow">DAILY PRESCRIPTION SCHEDULE</div>
             <h2>Today’s Medication Tracker</h2>
           </div>
-          {medData?.streak_days > 0 && (
-            <div className="streak-badge">
-              <Flame size={15} />
-              <span>{medData.streak_days}-Day Streak</span>
-            </div>
-          )}
+          <div className="card-head-actions">
+            {medData?.streak_days > 0 && (
+              <div className="streak-badge">
+                <Flame size={15} />
+                <span>{medData.streak_days}-Day Streak</span>
+              </div>
+            )}
+            <button
+              type="button"
+              className="button button-small button-outline"
+              onClick={() => setScheduleModalOpen(true)}
+            >
+              <Settings size={14} /> Change Schedule
+            </button>
+          </div>
         </div>
 
         {medData?.schedule?.length ? (
@@ -221,6 +236,12 @@ export default function Dashboard() {
       </Card>
     </div>
     <div className="dashboard-footnote">CareBridge AI helps organize clinician-provided instructions. It does not diagnose or replace your healthcare team.</div>
+    <MedicationScheduleModal
+      isOpen={scheduleModalOpen}
+      onClose={() => setScheduleModalOpen(false)}
+      schedule={medData?.schedule}
+      onUpdated={loadMedications}
+    />
   </div>
 }
 

@@ -14,6 +14,7 @@ from app.database.models import (
     Document,
     JourneyTask,
     Notification,
+    PatientMedication,
     PatientProfile,
     RequiredReport,
     User,
@@ -31,6 +32,24 @@ class QuestionInput(BaseModel):
 class MedicationLogInput(BaseModel):
     medication_id: str
     taken: bool = True
+
+
+class MedicationCreate(BaseModel):
+    name: str = Field(min_length=2, max_length=160)
+    dosage: str = Field(min_length=1, max_length=80)
+    time_slot: str = Field(default="Morning", max_length=40)
+    time_label: str = Field(default="08:00 AM", max_length=40)
+    instructions: str = Field(default="", max_length=500)
+    indication: str = Field(default="", max_length=160)
+
+
+class MedicationUpdate(BaseModel):
+    name: Optional[str] = None
+    dosage: Optional[str] = None
+    time_slot: Optional[str] = None
+    time_label: Optional[str] = None
+    instructions: Optional[str] = None
+    indication: Optional[str] = None
 
 
 # In-memory adherence tracking per user for today's session
@@ -131,47 +150,31 @@ def get_medications(db: Session = Depends(get_db), user: User = Depends(get_curr
     user_key = f"{patient_id}:{today_str}"
     taken_set = _ADHERENCE_STORE.get(user_key, set())
 
+    meds = db.query(PatientMedication).filter_by(patient_id=patient_id, is_active=True).order_by(PatientMedication.id.asc()).all()
+    if not meds:
+        # Seed default discharge medications for this patient
+        defaults = [
+            PatientMedication(patient_id=patient_id, name="Aspirin", dosage="75 mg", time_slot="Morning", time_label="08:00 AM", instructions="Take with breakfast and full glass of water", indication="Cardiovascular protection"),
+            PatientMedication(patient_id=patient_id, name="Metformin", dosage="500 mg", time_slot="Morning", time_label="08:30 AM", instructions="Take after morning meal", indication="Blood sugar regulation"),
+            PatientMedication(patient_id=patient_id, name="Metformin", dosage="500 mg", time_slot="Afternoon", time_label="01:30 PM", instructions="Take after lunch", indication="Blood sugar regulation"),
+            PatientMedication(patient_id=patient_id, name="Atorvastatin", dosage="20 mg", time_slot="Evening", time_label="08:00 PM", instructions="Take at bedtime with water", indication="Cholesterol management"),
+        ]
+        db.add_all(defaults)
+        db.commit()
+        meds = db.query(PatientMedication).filter_by(patient_id=patient_id, is_active=True).order_by(PatientMedication.id.asc()).all()
+
     schedule = [
         {
-            "id": "med-1",
-            "name": "Aspirin",
-            "dosage": "75 mg",
-            "time_slot": "Morning",
-            "time_label": "08:00 AM",
-            "instructions": "Take with breakfast and full glass of water",
-            "indication": "Cardiovascular protection",
-            "taken": "med-1" in taken_set,
-        },
-        {
-            "id": "med-2",
-            "name": "Metformin",
-            "dosage": "500 mg",
-            "time_slot": "Morning",
-            "time_label": "08:30 AM",
-            "instructions": "Take after morning meal",
-            "indication": "Blood sugar regulation",
-            "taken": "med-2" in taken_set,
-        },
-        {
-            "id": "med-3",
-            "name": "Metformin",
-            "dosage": "500 mg",
-            "time_slot": "Afternoon",
-            "time_label": "01:30 PM",
-            "instructions": "Take after lunch",
-            "indication": "Blood sugar regulation",
-            "taken": "med-3" in taken_set,
-        },
-        {
-            "id": "med-4",
-            "name": "Atorvastatin",
-            "dosage": "20 mg",
-            "time_slot": "Evening",
-            "time_label": "08:00 PM",
-            "instructions": "Take at bedtime with water",
-            "indication": "Cholesterol management",
-            "taken": "med-4" in taken_set,
-        },
+            "id": str(m.id),
+            "name": m.name,
+            "dosage": m.dosage,
+            "time_slot": m.time_slot,
+            "time_label": m.time_label,
+            "instructions": m.instructions,
+            "indication": m.indication,
+            "taken": str(m.id) in taken_set,
+        }
+        for m in meds
     ]
 
     total_doses = len(schedule)
@@ -179,12 +182,83 @@ def get_medications(db: Session = Depends(get_db), user: User = Depends(get_curr
 
     return {
         "today": today_str,
-        "streak_days": 5 + (1 if completed_doses == total_doses else 0),
+        "streak_days": 5 + (1 if total_doses > 0 and completed_doses == total_doses else 0),
         "total_doses": total_doses,
         "completed_doses": completed_doses,
         "adherence_percentage": round((completed_doses / total_doses) * 100) if total_doses else 0,
         "schedule": schedule,
     }
+
+
+@router.post("/medications", status_code=201)
+def add_medication(data: MedicationCreate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    patient_id = patient_id_for_user(db, user)
+    med = PatientMedication(
+        patient_id=patient_id,
+        name=data.name.strip(),
+        dosage=data.dosage.strip(),
+        time_slot=data.time_slot.strip(),
+        time_label=data.time_label.strip(),
+        instructions=data.instructions.strip(),
+        indication=data.indication.strip(),
+    )
+    db.add(med)
+    db.commit()
+    db.refresh(med)
+    return {
+        "status": "ok",
+        "medication": {
+            "id": str(med.id),
+            "name": med.name,
+            "dosage": med.dosage,
+            "time_slot": med.time_slot,
+            "time_label": med.time_label,
+            "instructions": med.instructions,
+            "indication": med.indication,
+            "taken": False,
+        },
+    }
+
+
+@router.put("/medications/{med_id}")
+def update_medication(med_id: int, data: MedicationUpdate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    patient_id = patient_id_for_user(db, user)
+    med = db.query(PatientMedication).filter_by(id=med_id, patient_id=patient_id).first()
+    if not med:
+        raise HTTPException(status_code=404, detail="Medication record not found.")
+
+    values = data.model_dump(exclude_unset=True)
+    for k, v in values.items():
+        if v is not None:
+            setattr(med, k, v.strip() if isinstance(v, str) else v)
+
+    db.commit()
+    db.refresh(med)
+    return {
+        "status": "ok",
+        "medication": {
+            "id": str(med.id),
+            "name": med.name,
+            "dosage": med.dosage,
+            "time_slot": med.time_slot,
+            "time_label": med.time_label,
+            "instructions": med.instructions,
+            "indication": med.indication,
+            "taken": False,
+        },
+    }
+
+
+@router.delete("/medications/{med_id}", status_code=200)
+def delete_medication(med_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    patient_id = patient_id_for_user(db, user)
+    med = db.query(PatientMedication).filter_by(id=med_id, patient_id=patient_id).first()
+    if not med:
+        raise HTTPException(status_code=404, detail="Medication record not found.")
+
+    db.delete(med)
+    db.commit()
+    return {"status": "ok", "message": "Medication deleted from schedule."}
 
 
 @router.post("/medications/log")
@@ -313,3 +387,4 @@ def copilot_ask(data: QuestionInput, db: Session = Depends(get_db), user: User =
         "timestamp": datetime.utcnow().isoformat(),
         "disclaimer": "CareBridge AI organizes clerical records and instructions. It does not replace clinical consultation.",
     }
+
