@@ -89,17 +89,17 @@ npm run build
 
 The repository includes a root-level `render.yaml`; its pre-deploy command applies `alembic upgrade head` before starting the API. Create a Render web service from that blueprint, configure a PostgreSQL database, and set `DATABASE_URL`, a strong `SECRET_KEY`, `CORS_ORIGINS`, and `DEMO_MODE=false` for a non-demo deployment. Add `AI_API_KEY` only if actual AI processing is desired. Uploaded files use local storage by default; production should point storage to a private durable object store before enabling patient document uploads.
 
-### Netlify client
+### GitHub Pages client
 
-The repository includes a root-level `netlify.toml` that builds the Vite app from `frontend/`, publishes `frontend/dist`, and routes client-side paths to the SPA entry point. Connect the repository to Netlify and use the detected build settings, or set the base directory to `frontend`, build command to `npm run build`, and publish directory to `dist`.
+The `.github/workflows/deploy-frontend.yml` workflow builds the Vite app and publishes `frontend/dist` to GitHub Pages. It automatically sets the repository base path and includes an SPA fallback for client-side routes.
 
-Set the Netlify environment variable `VITE_API_URL` to `https://<your-render-service>.onrender.com/api` (replace the hostname with your Render service URL). This value is embedded at build time, so redeploy the frontend after changing it. Set the Render environment variable `CORS_ORIGINS` to the deployed Netlify origin, for example `https://<your-site>.netlify.app` (no trailing slash). For a Netlify custom domain, include that origin too; separate multiple origins with commas. Redeploy the API after changing CORS settings.
+Enable GitHub Pages for the repository with **Settings → Pages → Source: GitHub Actions**. Set the repository variable `VITE_API_URL` to `https://<your-render-service>.onrender.com/api`. This value is embedded at build time, so redeploy the frontend after changing it. Set the Render environment variable `CORS_ORIGINS` to the Pages origin, for example `https://<github-user>.github.io` (origins must not include the `/CareBridge` repository path). Redeploy the API after changing CORS settings.
 
 ### Deployment sequence
 
-1. Deploy the Render blueprint in `render.yaml`. It provisions the API and PostgreSQL database. Render prompts for `CORS_ORIGINS`; enter a temporary Netlify origin such as `https://placeholder.netlify.app` for the initial deployment. Confirm `SECRET_KEY` is generated and `DEMO_MODE=false`.
-2. Create the Netlify site from this repository and set `VITE_API_URL` to the Render service URL with `/api` appended.
-3. Replace the temporary Render `CORS_ORIGINS` value with your actual Netlify origin (and custom domain if applicable), then redeploy the API. Confirm the API health endpoint at `https://<your-render-service>.onrender.com/api/health`, then sign in through the Netlify site.
+1. Deploy the Render blueprint in `render.yaml`. It provisions the API and PostgreSQL database. Set `CORS_ORIGINS` to the future GitHub Pages origin, confirm `SECRET_KEY` is generated, and keep `DEMO_MODE=false`.
+2. In repository settings, enable GitHub Pages with **GitHub Actions** as the source. Add the repository variable `VITE_API_URL` with the Render service URL and `/api` appended.
+3. Run the **Deploy frontend to GitHub Pages** workflow. Confirm the API health endpoint at `https://<your-render-service>.onrender.com/api/health`, then sign in through the Pages site.
 
 The application stores uploads on the service filesystem by default. Render's filesystem is ephemeral, so configure private durable object storage before relying on uploaded documents across deploys or restarts. Keep patient data and production AI use disabled until access controls, retention, encryption, backups, monitoring, and provider terms have been reviewed for the intended deployment.
 

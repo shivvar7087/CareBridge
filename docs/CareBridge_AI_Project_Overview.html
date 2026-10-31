@@ -247,7 +247,7 @@
       </tbody>
     </table>
     <h3>Deployment model</h3>
-    <p>The root Render blueprint defines the Python API service, a PostgreSQL database, and a pre-deploy Alembic migration. The React client can be deployed to Vercel with its SPA rewrite and a <span class="mono">VITE_API_URL</span> pointing at the deployed API. The backend CORS list must include the deployed frontend origin.</p>
+    <p>The root Render blueprint defines the Python API service, a PostgreSQL database, and a pre-deploy Alembic migration. The React client can be deployed to GitHub Pages with its SPA fallback and a <span class="mono">VITE_API_URL</span> pointing at the deployed API. The backend CORS list must include the deployed frontend origin.</p>
     <p>Uploaded documents use local storage by default. A production deployment should use private durable object storage and verify backup, retention, restore, and access-control behavior before enabling real document uploads.</p>
   </section>
 
