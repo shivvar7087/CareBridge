@@ -33,7 +33,11 @@ class Settings:
 
     @property
     def allowed_origins(self) -> list[str]:
-        origins = {origin.strip() for origin in self.cors_origins.split(",") if origin.strip()}
+        origins = {origin.strip().rstrip("/") for origin in self.cors_origins.split(",") if origin.strip()}
+        origins.update({
+            "https://shivvar7087.github.io",
+            "https://carebridge147.netlify.app",
+        })
         if self.demo_mode:
             origins.update({
                 "http://localhost:5173",
