@@ -42,9 +42,22 @@ jobs:
       - name: Verify API URL
         run: |
           if [ -z "$VITE_API_URL" ]; then
-            echo "::error::Missing VITE_API_URL! Please add VITE_API_URL in GitHub Settings -> Secrets and variables -> Actions -> Variables (or Secrets) pointing to your Render API URL (e.g., https://your-backend.onrender.com/api)."
+            echo "::error::Missing VITE_API_URL. Add it in GitHub Settings -> Secrets and variables -> Actions -> Variables (or Secrets), pointing to your Render API URL (for example https://your-backend.onrender.com/api)."
             exit 1
           fi
+          case "$VITE_API_URL" in
+            http://localhost:*|http://127.0.0.1:*|https://localhost:*|https://127.0.0.1:*)
+              echo "::error::VITE_API_URL points to localhost. Configure it with the deployed Render API URL before deploying."
+              exit 1
+              ;;
+          esac
+          case "$VITE_API_URL" in
+            */api) ;;
+            *)
+              echo "::error::VITE_API_URL must end with /api."
+              exit 1
+              ;;
+          esac
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL || secrets.VITE_API_URL }}
 
