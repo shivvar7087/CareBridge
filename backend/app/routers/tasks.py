@@ -20,12 +20,21 @@ VALID_STATUSES = {"Pending", "In Progress", "Completed", "Overdue", "Needs Verif
 
 @router.get("", response_model=list[TaskOut])
 def list_tasks(status_filter: str | None = Query(default=None, alias="status"), db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    from app.services.notifications import create_journey_reminders
+    from app.database.models import RequiredReport
+
+    today = date.today()
     query = visible_tasks_query(db, user)
     tasks = query.all()
-    if mark_overdue(tasks):
+    if mark_overdue(tasks, today):
         db.commit()
         for task in tasks:
             db.refresh(task)
+    patient_id = patient_id_for_user(db, user)
+    reports = db.query(RequiredReport).filter_by(patient_id=patient_id).all() if user.role == "patient" else []
+    create_journey_reminders(db, user.id, tasks, reports, today)
+    db.commit()
+
     query = visible_tasks_query(db, user)
     if status_filter:
         query = query.filter(JourneyTask.status == status_filter)
@@ -42,6 +51,9 @@ def create_task(data: TaskCreate, db: Session = Depends(get_db), user: User = De
     values = data.model_dump()
     caregiver_id = values.pop("assigned_to_id")
     task = JourneyTask(patient_id=user.id, **values)
+    today = date.today()
+    if task.due_date and task.due_date < today and task.status in {"Pending", "In Progress", "Scheduled"}:
+        task.status = "Overdue"
     db.add(task)
     db.flush()
     if caregiver_id:
@@ -49,6 +61,10 @@ def create_task(data: TaskCreate, db: Session = Depends(get_db), user: User = De
     log_action(db, user.id, "task.created", "journey_task", task.id)
     if caregiver_id:
         notify(db, caregiver_id, "A task was assigned to you", task.title, "task")
+    from app.services.notifications import create_journey_reminders
+    from app.database.models import RequiredReport
+    reports = db.query(RequiredReport).filter_by(patient_id=user.id).all()
+    create_journey_reminders(db, user.id, [task], reports, today)
     db.commit()
     db.refresh(task)
     return task
@@ -76,7 +92,14 @@ def update_task(task_id: int, data: TaskUpdate, db: Session = Depends(get_db), u
         set_task_assignment(db, task, values.pop("assigned_to_id"), user.id)
     for key, value in values.items():
         setattr(task, key, value)
+    today = date.today()
+    if task.due_date and task.due_date < today and task.status in {"Pending", "In Progress", "Scheduled"}:
+        task.status = "Overdue"
     db.add(task)
+    from app.services.notifications import create_journey_reminders
+    from app.database.models import RequiredReport
+    reports = db.query(RequiredReport).filter_by(patient_id=task.patient_id).all()
+    create_journey_reminders(db, user.id, [task], reports, today)
     db.commit()
     db.refresh(task)
     return task

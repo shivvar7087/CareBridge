@@ -16,14 +16,34 @@ router = APIRouter(prefix="/api/journey", tags=["journey"])
 
 @router.get("")
 def get_journey(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    from datetime import date
+    from app.services.journey_service import mark_overdue
+    from app.services.notifications import create_journey_reminders
+    from app.database.models import RequiredReport
+
+    today = date.today()
+    tasks = visible_tasks_query(db, user).all()
+    if mark_overdue(tasks, today):
+        db.commit()
     patient_id = patient_id_for_user(db, user)
+    reports = db.query(RequiredReport).filter_by(patient_id=patient_id).all() if user.role == "patient" else []
+    create_journey_reminders(db, user.id, tasks, reports, today)
+    db.commit()
+
     patient = db.get(User, patient_id)
-    tasks = visible_tasks_query(db, user).order_by(JourneyTask.due_date.asc().nullslast()).all()
-    return {"id": patient_id, "title": f"{patient.full_name}'s healthcare journey", "tasks": tasks}
+    ordered_tasks = visible_tasks_query(db, user).order_by(JourneyTask.due_date.asc().nullslast()).all()
+    return {"id": patient_id, "title": f"{patient.full_name}'s healthcare journey", "tasks": ordered_tasks}
 
 
 @router.get("/timeline", response_model=list[TaskOut])
 def timeline(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    from datetime import date
+    from app.services.journey_service import mark_overdue
+
+    today = date.today()
+    tasks = visible_tasks_query(db, user).all()
+    if mark_overdue(tasks, today):
+        db.commit()
     return visible_tasks_query(db, user).order_by(JourneyTask.due_date.asc().nullslast(), JourneyTask.id.asc()).all()
 
 

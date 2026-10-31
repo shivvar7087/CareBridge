@@ -17,6 +17,7 @@ export default function Dashboard() {
   if (!data) return <Loading />
   const { summary, task_status: taskStatus, journey_progress: progress } = data
   const percentage = getProgressPercentage(summary.completed_tasks, summary.total_tasks)
+  const todayYMD = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`
   return <div className="dashboard-page">
     <div className="welcome-strip"><div><div className="eyebrow">YOUR CARE, COORDINATED</div><h1>Good to see you, {data.patient.name.split(' ')[0]} <span className="wave">✦</span></h1><p>Here’s what’s happening across your healthcare journey.</p></div><div className="welcome-art"><div className="art-ring ring-one" /><div className="art-ring ring-two" /><span><Activity size={28} /></span></div></div>
     {data.patient.is_demo && <div className="demo-banner"><span className="demo-label">FICTIONAL DEMO</span> You’re viewing sample information. It does not represent a real patient or medical record.</div>}
@@ -37,7 +38,23 @@ export default function Dashboard() {
     </div>
     <div className="dashboard-grid dashboard-grid-lower">
       <Card className="appointments-card"><div className="card-head"><div><div className="eyebrow">ON YOUR CALENDAR</div><h2>Upcoming appointments</h2></div><span className="card-icon soft-blue"><CalendarDays size={18} /></span></div>
-        {data.upcoming_appointments.length ? <div className="appointment-list">{data.upcoming_appointments.map((appointment) => <div className="appointment-row" key={appointment.id}><div className="calendar-date"><strong>{new Date(`${appointment.due_date}T12:00:00`).getDate()}</strong><span>{new Date(`${appointment.due_date}T12:00:00`).toLocaleDateString('en-IN', { month: 'short' })}</span></div><div className="appointment-copy"><strong>{appointment.title}</strong><span>{appointment.description || 'Appointment date from your healthcare journey'}</span></div><StatusBadge status={appointment.status} /></div>)}</div> : <EmptyState icon={CalendarDays} title="Nothing scheduled yet" detail="Confirmed appointments from your care plan will appear here." />}
+        {data.upcoming_appointments.length ? <div className="appointment-list">{data.upcoming_appointments.map((appointment) => {
+          const isApptToday = appointment.due_date === todayYMD
+          return <div className={`appointment-row ${isApptToday ? 'appointment-row-today' : ''}`} key={appointment.id}>
+            <div className={`calendar-date ${isApptToday ? 'calendar-date-today' : ''}`}>
+              <strong>{new Date(`${appointment.due_date}T12:00:00`).getDate()}</strong>
+              <span>{isApptToday ? 'TODAY' : new Date(`${appointment.due_date}T12:00:00`).toLocaleDateString('en-IN', { month: 'short' })}</span>
+            </div>
+            <div className="appointment-copy">
+              <div className="appt-title-wrap">
+                <strong>{appointment.title}</strong>
+                {isApptToday && <span className="task-date-tag tag-today">⚡ TODAY</span>}
+              </div>
+              <span>{appointment.description || 'Appointment date from your healthcare journey'}</span>
+            </div>
+            <StatusBadge status={appointment.status} />
+          </div>
+        })}</div> : <EmptyState icon={CalendarDays} title="Nothing scheduled yet" detail="Confirmed appointments from your care plan will appear here." />}
         <Link to="/journey" className="card-footer-link">Open healthcare journey <ArrowRight size={15} /></Link>
       </Card>
       <Card className="reports-card"><div className="card-head"><div><div className="eyebrow">DOCUMENT CHECKLIST</div><h2>Report readiness</h2></div><Link to="/reports" className="icon-link" aria-label="View report readiness"><ArrowRight size={17} /></Link></div>
@@ -46,7 +63,20 @@ export default function Dashboard() {
         <Link to="/reports" className="card-footer-link">Open report checklist <ArrowRight size={15} /></Link>
       </Card>
       <Card className="activity-card"><div className="card-head"><div><div className="eyebrow">RECENT UPDATES</div><h2>Notifications</h2></div><Link to="/notifications" className="text-link">See all <ChevronRight size={16} /></Link></div>
-        {data.recent_notifications.length ? <div className="activity-list">{data.recent_notifications.map((n) => <div className="activity-row" key={n.id}><span className={`activity-dot activity-${n.kind}`} /><div><strong>{n.title}</strong><p>{n.message}</p><small>{new Date(n.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</small></div></div>)}</div> : <EmptyState title="You’re all caught up" detail="Journey reminders will show up here." />}
+        {data.recent_notifications.length ? <div className="activity-list">{data.recent_notifications.map((n) => {
+          const isNotificationToday = n.title?.includes('TODAY') || n.message?.includes('today') || n.message?.includes('TODAY')
+          return <div className={`activity-row ${isNotificationToday ? 'activity-row-today' : ''}`} key={n.id}>
+            <span className={`activity-dot activity-${n.kind} ${isNotificationToday ? 'dot-pulse' : ''}`} />
+            <div>
+              <div className="activity-title-wrap">
+                <strong>{n.title}</strong>
+                {isNotificationToday && <span className="task-date-tag tag-today mini-tag">TODAY</span>}
+              </div>
+              <p>{n.message}</p>
+              <small>{new Date(n.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</small>
+            </div>
+          </div>
+        })}</div> : <EmptyState title="You’re all caught up" detail="Journey reminders will show up here." />}
       </Card>
       <Card className="caregiver-card"><div className="caregiver-card-top"><div className="caregiver-illustration"><HeartHandshake size={23} /></div><div><div className="eyebrow">CARE, SHARED</div><h2>Caregiver activity</h2></div><Link to="/caregivers" className="icon-link" aria-label="Manage caregivers"><ArrowRight size={16} /></Link></div>
         {data.caregiver_activity.length ? <div className="care-activity-list">{data.caregiver_activity.slice(0, 3).map((activity) => <div className="care-activity-row" key={activity.task_id}><span className="caregiver-mini-avatar"><UserRound size={13} /></span><div><strong>{activity.caregiver_name}</strong><small>{activity.task_title}</small></div><StatusBadge status={activity.status} /></div>)}</div> : <div className="care-empty"><p>{summary.caregiver_count ? 'No caregiver tasks have been assigned yet.' : 'Connect a caregiver to share selected journey tasks.'}</p><Link to="/caregivers" className="button button-secondary">Manage caregivers <ArrowRight size={15} /></Link></div>}

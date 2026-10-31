@@ -1351,3 +1351,131 @@ h3{font-size:17px}
   background: #fef2f2 !important;
   color: #b91c1c !important;
 }
+
+/* ==========================================================================
+   Current Date & Due Date Intelligence Highlights
+   ========================================================================== */
+
+.task-title-wrap,
+.appt-title-wrap,
+.activity-title-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.task-date-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.task-date-tag.mini-tag {
+  padding: 1px 6px;
+  font-size: 10px;
+}
+
+.tag-today {
+  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.3);
+}
+
+.tag-overdue {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.tag-tomorrow {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.task-card-today {
+  border-left: 4px solid #0d9488 !important;
+  background: linear-gradient(90deg, rgba(204, 251, 241, 0.15) 0%, #ffffff 15%) !important;
+}
+
+.task-card-overdue {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.meta-due-today {
+  color: #0f766e !important;
+  font-weight: 600;
+}
+
+.inline-today-label {
+  color: #0d9488;
+  font-weight: 700;
+}
+
+/* Timeline enhancements for Today */
+.timeline-date-today {
+  color: #0f766e !important;
+}
+
+.timeline-date-today span {
+  font-weight: 700;
+}
+
+.today-chip {
+  background: #0d9488;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-right: 8px;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+}
+
+.timeline-card-today {
+  border-left: 4px solid #0d9488 !important;
+}
+
+/* Dashboard enhancements for Today */
+.appointment-row-today {
+  border-left: 3px solid #0d9488;
+  background: #f0fdfa;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.calendar-date-today {
+  background: #0d9488 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.calendar-date-today strong,
+.calendar-date-today span {
+  color: #ffffff !important;
+}
+
+.activity-row-today {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+@keyframes dotPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(13, 148, 136, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+}
+
+.dot-pulse {
+  animation: dotPulse 2s infinite;
+}

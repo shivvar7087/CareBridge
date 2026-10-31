@@ -47,6 +47,34 @@ export function AddTaskForm({ onClose, onSaved }) {
   return <div className="modal-backdrop" onClick={onClose}><div className="modal-card" onClick={(e) => e.stopPropagation()}><div className="modal-head"><div><div className="eyebrow">JOURNEY STEP</div><h2>Add a task</h2></div><button className="icon-link" onClick={onClose}>×</button></div>{error && <div className="form-error">{error}</div>}<form onSubmit={submit} className="form-grid"><label className="field span-two"><span>Task title</span><input required minLength="2" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Collect a diagnostic report" /></label><label className="field span-two"><span>Description</span><textarea rows="3" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Add administrative details or context" /></label><label className="field"><span>Category</span><select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{['Other', 'Appointment', 'Diagnostic Test', 'Report Collection', 'Hospital Discharge', 'Follow-up', 'Administrative'].map((c) => <option key={c}>{c}</option>)}</select></label><label className="field"><span>Due date</span><input type="date" value={form.due_date} onChange={(e) => setForm({ ...form, due_date: e.target.value })} /></label><div className="span-two modal-actions"><button className="button button-quiet" type="button" onClick={onClose}>Cancel</button><button className="button button-primary" disabled={busy}>{busy ? 'Saving…' : 'Add to journey'}</button></div></form></div></div>
 }
 
+function getDueDateContext(dueDateStr, status) {
+  if (!dueDateStr) return { label: 'No due date', tag: null, isToday: false, isOverdue: false }
+  const now = new Date()
+  const todayYMD = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  const tomorrow = new Date(now)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const tomorrowYMD = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
+
+  const isCompleted = status === 'Completed'
+  const isToday = dueDateStr === todayYMD
+  const isTomorrow = dueDateStr === tomorrowYMD
+  const isOverdue = !isCompleted && dueDateStr < todayYMD
+
+  let tag = null
+  if (!isCompleted) {
+    if (isToday) {
+      tag = { text: '⚡ Due Today', type: 'today' }
+    } else if (isOverdue) {
+      tag = { text: '⚠️ Overdue', type: 'overdue' }
+    } else if (isTomorrow) {
+      tag = { text: '📅 Due Tomorrow', type: 'tomorrow' }
+    }
+  }
+
+  const formatted = new Date(`${dueDateStr}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+  return { formatted, tag, isToday, isOverdue }
+}
+
 export default function Tasks() {
   const { user } = useAuth()
   const [tasks, setTasks] = useState(null)
@@ -60,7 +88,39 @@ export default function Tasks() {
   return <div><PageHeading eyebrow="YOUR TO-DO LIST" title="My Tasks" description="Keep track of care journey steps, due dates, and shared responsibilities." action={user?.role === 'patient' && <button className="button button-primary" onClick={() => setOpenAdd(true)}><Plus size={17} /> Add a task</button>} />
     {error && <div className="form-error">{error}</div>}
     <div className="task-filters">{['All', 'Pending', 'In Progress', 'Scheduled', 'Overdue', 'Needs Verification', 'Completed'].map((s) => <button key={s} className={filter === s ? 'filter-chip selected' : 'filter-chip'} onClick={() => setFilter(s)}>{s}{s === 'All' ? <span>{tasks.length}</span> : <span>{tasks.filter((t) => t.status === s).length}</span>}</button>)}</div>
-    {shown.length === 0 ? <Card><EmptyState icon={Circle} title="No tasks in this view" detail="Try another status or add a task to your journey." /></Card> : <div className="task-list">{shown.map((task) => <Card className="task-card" key={task.id}><div className={`task-status-icon task-${task.status.toLowerCase().replaceAll(' ', '-')}`}>{task.status === 'Completed' ? <Check size={18} /> : task.status === 'Overdue' ? <Clock3 size={18} /> : <Circle size={17} />}</div><div className="task-card-body"><div className="task-title-row"><h3>{task.title}</h3><StatusBadge status={task.status} /></div><p>{task.description || 'No description provided.'}</p><div className="task-card-meta"><span><CalendarDays size={14} />{task.due_date ? new Date(`${task.due_date}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'No due date'}</span><span><span className="meta-dot" />{task.category}</span>{task.assigned_to_id && <span><UserRound size={14} /> Shared with caregiver</span>}{task.needs_clinician_verification && <span className="verification-note">Needs clinician verification</span>}</div></div><div className="task-card-action"><TaskHistoryButton task={task} /><TaskAction task={task} onChanged={load} /></div></Card>)}</div>}
+    {shown.length === 0 ? <Card><EmptyState icon={Circle} title="No tasks in this view" detail="Try another status or add a task to your journey." /></Card> : <div className="task-list">{shown.map((task) => {
+      const dateInfo = getDueDateContext(task.due_date, task.status)
+      const cardClass = `task-card ${dateInfo.isToday && task.status !== 'Completed' ? 'task-card-today' : ''} ${dateInfo.isOverdue ? 'task-card-overdue' : ''}`
+      return <Card className={cardClass} key={task.id}>
+        <div className={`task-status-icon task-${task.status.toLowerCase().replaceAll(' ', '-')}`}>
+          {task.status === 'Completed' ? <Check size={18} /> : task.status === 'Overdue' ? <Clock3 size={18} /> : <Circle size={17} />}
+        </div>
+        <div className="task-card-body">
+          <div className="task-title-row">
+            <div className="task-title-wrap">
+              <h3>{task.title}</h3>
+              {dateInfo.tag && <span className={`task-date-tag tag-${dateInfo.tag.type}`}>{dateInfo.tag.text}</span>}
+            </div>
+            <StatusBadge status={task.status} />
+          </div>
+          <p>{task.description || 'No description provided.'}</p>
+          <div className="task-card-meta">
+            <span className={dateInfo.isToday && task.status !== 'Completed' ? 'meta-due-today' : ''}>
+              <CalendarDays size={14} />
+              {task.due_date ? dateInfo.formatted : 'No due date'}
+              {dateInfo.isToday && task.status !== 'Completed' && <strong className="inline-today-label"> · TODAY</strong>}
+            </span>
+            <span><span className="meta-dot" />{task.category}</span>
+            {task.assigned_to_id && <span><UserRound size={14} /> Shared with caregiver</span>}
+            {task.needs_clinician_verification && <span className="verification-note">Needs clinician verification</span>}
+          </div>
+        </div>
+        <div className="task-card-action">
+          <TaskHistoryButton task={task} />
+          <TaskAction task={task} onChanged={load} />
+        </div>
+      </Card>
+    })}</div>}
     {openAdd && <AddTaskForm onClose={() => setOpenAdd(false)} onSaved={() => { setOpenAdd(false); load() }} />}
   </div>
 }
