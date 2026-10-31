@@ -3,10 +3,12 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Activity, Bell, CalendarDays, CheckSquare, ChevronDown, ClipboardCheck,
   FileText, HeartHandshake, LayoutDashboard, LifeBuoy, LogOut, Menu,
-  Settings, ShieldCheck, UserRound, X
+  Settings, ShieldAlert, ShieldCheck, UserRound, X
 } from 'lucide-react'
 import { useAuth } from '../auth'
 import api from '../api'
+import EmergencyModal from './EmergencyModal'
+import AiCopilotDrawer from './AiCopilotDrawer'
 
 const navItems = [
   ['/', 'Dashboard', LayoutDashboard],
@@ -25,6 +27,7 @@ export default function AppShell() {
   const { user, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [emergencyOpen, setEmergencyOpen] = useState(false)
   const [unread, setUnread] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
@@ -34,6 +37,14 @@ export default function AppShell() {
     setMobileOpen(false)
     setMenuOpen(false)
   }, [location.pathname])
+
+  useEffect(() => {
+    function handleOpenEmergency() {
+      setEmergencyOpen(true)
+    }
+    window.addEventListener('open-emergency-modal', handleOpenEmergency)
+    return () => window.removeEventListener('open-emergency-modal', handleOpenEmergency)
+  }, [])
 
   useEffect(() => {
     api.get('/notifications')
@@ -159,6 +170,16 @@ export default function AppShell() {
           </div>
 
           <div className="topbar-actions">
+            <button
+              type="button"
+              className="emergency-top-btn"
+              onClick={() => setEmergencyOpen(true)}
+              title="View In-Case-of-Emergency (ICE) Medical Passport"
+            >
+              <ShieldAlert size={15} />
+              <span>Emergency Card</span>
+            </button>
+
             <span className="secure-pill">
               <ShieldCheck size={14} /> Secure workspace
             </span>
@@ -231,6 +252,18 @@ export default function AppShell() {
                       className="dropdown-item"
                       onClick={() => {
                         setMenuOpen(false)
+                        setEmergencyOpen(true)
+                      }}
+                    >
+                      <ShieldAlert size={16} />
+                      <span>Emergency Medical Passport</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="dropdown-item"
+                      onClick={() => {
+                        setMenuOpen(false)
                         navigate('/notifications')
                       }}
                     >
@@ -260,6 +293,9 @@ export default function AppShell() {
           <Outlet />
         </main>
       </div>
+
+      <EmergencyModal isOpen={emergencyOpen} onClose={() => setEmergencyOpen(false)} />
+      <AiCopilotDrawer openEmergencyModal={() => setEmergencyOpen(true)} />
     </div>
   )
 }

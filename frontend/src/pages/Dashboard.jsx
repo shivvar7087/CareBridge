@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Activity, ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock3, FileCheck2, FileText, HeartHandshake, ListTodo, TriangleAlert, UserRound } from 'lucide-react'
+import {
+  Activity, ArrowRight, CalendarDays, Check, CheckCircle2, ChevronRight,
+  Clock3, FileCheck2, FileText, Flame, HeartHandshake, ListTodo, Pill,
+  Plus, ShieldAlert, Sparkles, TriangleAlert, UserRound
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import api, { errorMessage } from '../api'
@@ -9,17 +13,94 @@ import { getNonZeroStatusRows, getProgressPercentage } from '../utils/dashboard'
 const colors = ['#159b8c', '#90b7d4', '#79b5a0', '#e89166', '#b7a6df']
 const dateLabel = (value) => value ? new Date(`${value}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Date to be confirmed'
 
+function getDynamicGreeting(name) {
+  const hour = new Date().getHours()
+  const firstName = name ? name.split(' ')[0] : 'there'
+  if (hour < 12) return { text: `Good morning, ${firstName}`, icon: '🌅' }
+  if (hour < 17) return { text: `Good afternoon, ${firstName}`, icon: '☀️' }
+  return { text: `Good evening, ${firstName}`, icon: '🌙' }
+}
+
 export default function Dashboard() {
   const [data, setData] = useState(null)
+  const [medData, setMedData] = useState(null)
   const [error, setError] = useState('')
-  useEffect(() => { api.get('/dashboard').then(({ data: response }) => setData(response)).catch((e) => setError(errorMessage(e))) }, [])
+
+  useEffect(() => {
+    api.get('/dashboard')
+      .then(({ data: response }) => setData(response))
+      .catch((e) => setError(errorMessage(e)))
+
+    api.get('/copilot/medications')
+      .then(({ data: mResponse }) => setMedData(mResponse))
+      .catch(() => {})
+  }, [])
+
+  async function toggleMedication(medId, currentStatus) {
+    const nextStatus = !currentStatus
+    setMedData((prev) => {
+      if (!prev) return prev
+      const updatedSchedule = prev.schedule.map((m) => (m.id === medId ? { ...m, taken: nextStatus } : m))
+      const completed = updatedSchedule.filter((m) => m.taken).length
+      return {
+        ...prev,
+        schedule: updatedSchedule,
+        completed_doses: completed,
+        adherence_percentage: Math.round((completed / updatedSchedule.length) * 100),
+      }
+    })
+    try {
+      await api.post('/copilot/medications/log', { medication_id: medId, taken: nextStatus })
+    } catch (e) {
+      // silent
+    }
+  }
+
   if (error) return <div className="form-error">{error}</div>
   if (!data) return <Loading />
   const { summary, task_status: taskStatus, journey_progress: progress } = data
   const percentage = getProgressPercentage(summary.completed_tasks, summary.total_tasks)
   const todayYMD = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`
+  const greeting = getDynamicGreeting(data.patient.name)
+
   return <div className="dashboard-page">
-    <div className="welcome-strip"><div><div className="eyebrow">YOUR CARE, COORDINATED</div><h1>Good to see you, {data.patient.name.split(' ')[0]} <span className="wave">✦</span></h1><p>Here’s what’s happening across your healthcare journey.</p></div><div className="welcome-art"><div className="art-ring ring-one" /><div className="art-ring ring-two" /><span><Activity size={28} /></span></div></div>
+    <div className="welcome-strip">
+      <div>
+        <div className="eyebrow">YOUR CARE, COORDINATED</div>
+        <h1>{greeting.text} <span className="wave">{greeting.icon}</span></h1>
+        <p>Here’s what’s happening across your healthcare journey today.</p>
+      </div>
+      <div className="welcome-art">
+        <div className="art-ring ring-one" />
+        <div className="art-ring ring-two" />
+        <span><Activity size={28} /></span>
+      </div>
+    </div>
+
+    {/* Quick Action Shortcuts */}
+    <div className="quick-action-strip">
+      <Link to="/documents" className="quick-pill pill-upload">
+        <FileText size={15} /> <span>Upload Document</span>
+      </Link>
+      <Link to="/tasks" className="quick-pill pill-task">
+        <ListTodo size={15} /> <span>Add Journey Step</span>
+      </Link>
+      <button
+        type="button"
+        className="quick-pill pill-ice"
+        onClick={() => window.dispatchEvent(new CustomEvent('open-emergency-modal'))}
+      >
+        <ShieldAlert size={15} /> <span>Emergency Card (ICE)</span>
+      </button>
+      <button
+        type="button"
+        className="quick-pill pill-copilot"
+        onClick={() => window.dispatchEvent(new CustomEvent('open-copilot-drawer'))}
+      >
+        <Sparkles size={15} /> <span>Ask AI Copilot</span>
+      </button>
+    </div>
+
     {data.patient.is_demo && <div className="demo-banner"><span className="demo-label">FICTIONAL DEMO</span> You’re viewing sample information. It does not represent a real patient or medical record.</div>}
     {data.missing_steps.length > 0 && <div className="alert-strip"><span className="alert-icon"><TriangleAlert size={17} /></span><div><strong>{data.missing_steps.length} journey step{data.missing_steps.length > 1 ? 's' : ''} need attention</strong><span>{data.missing_steps[0].title} · {data.missing_steps[0].reason}</span></div><Link to="/journey" className="alert-link">Review steps <ArrowRight size={15} /></Link></div>}
     <div className="stats-grid">
@@ -37,6 +118,63 @@ export default function Dashboard() {
       </Card>
     </div>
     <div className="dashboard-grid dashboard-grid-lower">
+      {/* Daily Medication Tracker Card */}
+      <Card className="medication-tracker-card">
+        <div className="card-head">
+          <div>
+            <div className="eyebrow">DAILY PRESCRIPTION SCHEDULE</div>
+            <h2>Today’s Medication Tracker</h2>
+          </div>
+          {medData?.streak_days > 0 && (
+            <div className="streak-badge">
+              <Flame size={15} />
+              <span>{medData.streak_days}-Day Streak</span>
+            </div>
+          )}
+        </div>
+
+        {medData?.schedule?.length ? (
+          <div className="medication-tracker-content">
+            <div className="med-adherence-meter">
+              <div className="adherence-label-row">
+                <span>Adherence: <strong>{medData.completed_doses} of {medData.total_doses} doses</strong></span>
+                <span className="adherence-pct">{medData.adherence_percentage}%</span>
+              </div>
+              <div className="meter-track">
+                <div className="meter-fill" style={{ width: `${medData.adherence_percentage}%` }} />
+              </div>
+            </div>
+
+            <div className="daily-meds-list">
+              {medData.schedule.map((med) => (
+                <div className={`daily-med-row ${med.taken ? 'med-taken' : ''}`} key={med.id}>
+                  <button
+                    type="button"
+                    className={`med-check-btn ${med.taken ? 'checked' : ''}`}
+                    onClick={() => toggleMedication(med.id, med.taken)}
+                    aria-label={med.taken ? 'Mark as untaken' : 'Mark as taken'}
+                  >
+                    {med.taken && <Check size={14} strokeWidth={3} />}
+                  </button>
+                  <div className="med-row-info">
+                    <div className="med-row-top">
+                      <strong>{med.name}</strong>
+                      <span className="med-dose">{med.dosage}</span>
+                      <span className={`med-slot-badge slot-${med.time_slot.toLowerCase()}`}>
+                        {med.time_slot} ({med.time_label})
+                      </span>
+                    </div>
+                    <small>{med.instructions}</small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <EmptyState icon={Pill} title="No active medications" detail="Medications from uploaded discharge summaries will appear here." />
+        )}
+      </Card>
+
       <Card className="appointments-card"><div className="card-head"><div><div className="eyebrow">ON YOUR CALENDAR</div><h2>Upcoming appointments</h2></div><span className="card-icon soft-blue"><CalendarDays size={18} /></span></div>
         {data.upcoming_appointments.length ? <div className="appointment-list">{data.upcoming_appointments.map((appointment) => {
           const isApptToday = appointment.due_date === todayYMD

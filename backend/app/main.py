@@ -14,7 +14,7 @@ from app.core.config import settings
 from app.database.connection import Base, SessionLocal, engine
 from app.database import models  # noqa: F401 - register all models before create_all
 from app.database.compat_migrations import migrate_legacy_sqlite_schema
-from app.routers import auth, barriers, caregivers, dashboard, documents, journey, notifications, patients, reports, tasks
+from app.routers import auth, barriers, caregivers, copilot, dashboard, documents, journey, notifications, patients, reports, tasks
 from app.services.demo_seed import seed_demo
 
 
@@ -38,7 +38,7 @@ app.add_middleware(CORSMiddleware, allow_origins=settings.allowed_origins, allow
                    allow_methods=["*"], allow_headers=["*"])
 
 for router in (auth.router, patients.router, dashboard.router, documents.router, journey.router, tasks.router,
-               caregivers.router, reports.router, notifications.router, barriers.router):
+               caregivers.router, reports.router, notifications.router, barriers.router, copilot.router):
     app.include_router(router)
 
 
