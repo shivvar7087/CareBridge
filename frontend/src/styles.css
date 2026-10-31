@@ -27,3 +27,41 @@
 .suggestion-edit{width:100%;border:1px solid #e3ebf0;border-radius:5px;padding:6px 7px;color:#536f83;font-size:9px;background:#fff}.suggestion-edit-description{width:100%;resize:vertical;border:1px solid #e3ebf0;border-radius:5px;padding:6px 7px;color:#708695;font:8.5px/1.5 'DM Sans',sans-serif;background:#fff}
 .analysis-consent{display:flex;align-items:flex-start;gap:7px;text-align:left;max-width:285px;margin:0 0 12px;color:#718693;font-size:8px;line-height:1.5}.analysis-consent input{accent-color:#168f8a;margin:1px 0 0;flex:0 0 auto}
 .task-card-action,.timeline-action{display:flex;align-items:center;gap:6px}.history-button{display:inline-flex;align-items:center;gap:4px;border:1px solid #e2e9ee;background:#fff;border-radius:6px;padding:6px 7px;color:#7b8f9c;font-size:8px;white-space:nowrap}.history-button:hover{background:#f5f9fa;color:#277e79}.history-modal h3{font-size:10px;margin:14px 0 8px}.history-events{display:grid}.history-event{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-top:1px solid #edf1f4}.history-dot{width:8px;height:8px;border-radius:50%;background:#b0c1cb;margin-top:3px;flex:0 0 auto}.history-dot-active{background:#44a380}.history-event>div{display:grid;gap:4px}.history-event strong{font-size:9px;color:#597487;text-transform:capitalize}.history-event small,.history-empty{font-size:8px;color:#95a4ae;line-height:1.5}.history-empty{margin-bottom:8px}
+
+/* Clearer type scale and a more confident visual hierarchy */
+:root{font-size:16px}
+body{font-size:15px}
+h1{font-size:32px;line-height:1.2}
+h2{font-size:21px}
+h3{font-size:17px}
+.sidebar{padding-top:28px}
+.brand-lockup{font-size:21px}
+.workspace-label{font-size:11px}
+.nav-link{font-size:14px;padding:12px;border-radius:10px}
+.privacy-card strong{font-size:12px}.privacy-card span{font-size:11px}
+.profile-info strong{font-size:13px}.profile-info small{font-size:11px}
+.breadcrumb{font-size:13px}.secure-pill{font-size:12px}
+.page-wrap{padding-top:35px}
+.page-heading{margin-bottom:27px}.page-heading p{font-size:15px}
+.eyebrow{font-size:11px;letter-spacing:.14em}
+.button{font-size:13px;padding:11px 16px;border-radius:9px}
+.button-small{font-size:12px;padding:9px 12px}
+.card{padding:24px;border-radius:17px;box-shadow:0 8px 28px rgba(28,62,91,.065)}
+.card-head h2{font-size:19px}.text-link,.card-footer-link{font-size:12px}
+.field{font-size:13px}.field input,.field select,.field textarea{font-size:14px;padding:12px}
+.welcome-strip{min-height:165px;padding:32px 34px;margin-bottom:17px;border-radius:20px;background:linear-gradient(110deg,#fff 0%,#f3f9fc 57%,#e5f4f1 100%);box-shadow:0 10px 28px rgba(36,91,107,.055)}
+.welcome-strip h1{font-size:34px;letter-spacing:-.04em;margin-bottom:9px}.welcome-strip p{font-size:15px;color:#718899}
+.stats-grid{gap:16px;margin-bottom:18px}.stat-card{min-height:142px;padding:19px;border-radius:15px;box-shadow:0 7px 22px rgba(28,62,91,.055)}
+.stat-icon{width:38px;height:38px;border-radius:11px}.stat-value{font-size:29px;top:17px;right:20px}.stat-label{font-size:14px;margin-top:13px}.stat-foot{font-size:12px}
+.dashboard-grid{gap:17px;margin-bottom:17px}.journey-progress-card,.status-card,.appointments-card,.reports-card,.activity-card,.caregiver-card{min-height:255px}
+.progress-chart-wrap,.status-chart{width:150px;height:150px}.progress-center strong{font-size:26px}.progress-center span,.status-center span{font-size:11px}.progress-details>strong{font-size:19px}.progress-details>strong span{font-size:13px}.progress-details p{font-size:13px;max-width:280px}.progress-legend span{font-size:11px}
+.status-chart-area{height:165px}.status-center strong{font-size:24px}.status-legend{gap:12px}.status-legend>div>span{font-size:12px}.status-legend strong{font-size:13px}
+.appointment-row{gap:13px;padding:12px 0}.calendar-date{height:46px;width:44px}.calendar-date strong{font-size:17px}.calendar-date span{font-size:10px}.appointment-copy strong{font-size:13px}.appointment-copy span{font-size:11px;max-width:280px}
+.reports-summary{padding:13px}.reports-summary strong{font-size:13px}.reports-summary span:not(.report-summary-icon){font-size:11px}.mini-report{padding:10px 1px}.mini-report>span:nth-child(2){font-size:12px}
+.activity-row{padding:12px 0}.activity-row strong{font-size:13px}.activity-row p{font-size:11px}.activity-row small{font-size:10px}
+.caregiver-card-content h2{font-size:18px}.caregiver-card-content p{font-size:12px;max-width:300px}.caregiver-card-content .button{font-size:12px}
+.alert-strip{padding:13px 16px}.alert-strip strong{font-size:13px}.alert-strip span:not(.alert-icon){font-size:11px}.alert-link{font-size:11px}
+.demo-banner{font-size:12px;padding:11px 14px}.demo-label,.simulated-tag{font-size:10px}
+.status-badge{font-size:11px;padding:6px 9px}.empty-state strong{font-size:14px}.empty-state p{font-size:12px}
+@media(max-width:1180px){.nav-link{font-size:13px}.page-wrap{padding-top:29px}}
+@media(max-width:650px){h1{font-size:27px}.page-heading h1{font-size:27px}.page-heading p{font-size:14px}.welcome-strip{padding:21px 18px;min-height:138px}.welcome-strip h1{font-size:24px}.welcome-strip p{font-size:12px}.stat-card{min-height:116px;padding:13px}.stat-value{font-size:23px}.stat-label{font-size:12px}.stat-foot{font-size:10px}.card{padding:17px}.card-head h2{font-size:17px}.progress-chart-wrap,.status-chart{width:124px;height:124px}.progress-details p{font-size:11px}.appointment-copy strong{font-size:12px}.appointment-copy span{font-size:10px}}

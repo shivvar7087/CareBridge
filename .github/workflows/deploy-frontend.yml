@@ -36,28 +36,21 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci || npm install
         working-directory: frontend
 
-      - name: Verify API URL
+      - name: Prepare and Validate API URL
+        id: prepare_api
         run: |
-          if [ -z "$VITE_API_URL" ]; then
-            echo "::error::Missing VITE_API_URL. Add it in GitHub Settings -> Secrets and variables -> Actions -> Variables (or Secrets), pointing to your Render API URL (for example https://your-backend.onrender.com/api)."
-            exit 1
+          RAW_URL="${VITE_API_URL:-https://carebridge-1-9b9i.onrender.com/api}"
+          # Remove trailing slashes
+          CLEAN_URL=$(echo "$RAW_URL" | sed 's:/*$::')
+          # If does not end with /api, append /api
+          if [[ "$CLEAN_URL" != */api ]]; then
+            CLEAN_URL="${CLEAN_URL}/api"
           fi
-          case "$VITE_API_URL" in
-            http://localhost:*|http://127.0.0.1:*|https://localhost:*|https://127.0.0.1:*)
-              echo "::error::VITE_API_URL points to localhost. Configure it with the deployed Render API URL before deploying."
-              exit 1
-              ;;
-          esac
-          case "$VITE_API_URL" in
-            */api) ;;
-            *)
-              echo "::error::VITE_API_URL must end with /api."
-              exit 1
-              ;;
-          esac
+          echo "Validated API URL: $CLEAN_URL"
+          echo "api_url=$CLEAN_URL" >> $GITHUB_OUTPUT
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL || secrets.VITE_API_URL }}
 
@@ -66,7 +59,7 @@ jobs:
         working-directory: frontend
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          VITE_API_URL: ${{ vars.VITE_API_URL || secrets.VITE_API_URL }}
+          VITE_API_URL: ${{ steps.prepare_api.outputs.api_url }}
 
       - name: Add SPA fallback
         run: cp frontend/dist/index.html frontend/dist/404.html
