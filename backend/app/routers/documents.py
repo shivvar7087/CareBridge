@@ -181,3 +181,23 @@ def confirm(document_id: int, data: ConfirmDocument, db: Session = Depends(get_d
     log_action(db, user.id, "document.confirmed", "document", document.id)
     db.commit()
     return {"confirmed": True, "created_task_ids": created}
+
+
+@router.delete("/{document_id}", status_code=200)
+def delete_document(document_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    document = _owned_document(db, user, document_id)
+    db.query(JourneyTask).filter_by(source_document_id=document.id).update({"source_document_id": None})
+    db.query(ExtractedDocumentData).filter_by(document_id=document.id).delete()
+    from app.database.models import RequiredReport
+    db.query(RequiredReport).filter_by(supporting_document_id=document.id).update({"supporting_document_id": None, "status": "Missing"})
+    if not document.storage_path.startswith("demo://"):
+        try:
+            p = Path(document.storage_path)
+            if p.is_file():
+                p.unlink()
+        except OSError:
+            pass
+    db.delete(document)
+    log_action(db, user.id, "document.deleted", "document", document.id)
+    db.commit()
+    return {"message": "Document deleted successfully", "id": document_id}
