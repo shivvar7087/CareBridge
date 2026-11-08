@@ -37,8 +37,12 @@ def register(data: RegisterInput, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenOut)
+@router.post("/token", response_model=TokenOut)
 def login(data: LoginInput, db: Session = Depends(get_db)):
-    user = db.query(User).filter_by(email=data.email.lower()).first()
+    email = (data.email or data.username or "").strip().lower()
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required.")
+    user = db.query(User).filter_by(email=email).first()
     if not user or not verify_password(data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Email or password is incorrect.")
     return TokenOut(access_token=create_access_token(user.id), user=user)

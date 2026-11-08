@@ -5,7 +5,8 @@ class AuthService {
   final ApiClient _client = ApiClient();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await _client.post('/auth/token', {
+    final response = await _client.post('/auth/login', {
+      'email': email,
       'username': email,
       'password': password,
     });

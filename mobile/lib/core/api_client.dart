@@ -34,16 +34,28 @@ class ApiClient {
     return headers;
   }
 
+  Uri _buildUri(String endpoint) {
+    String base = baseUrl.trim();
+    while (base.endsWith('/')) {
+      base = base.substring(0, base.length - 1);
+    }
+    if (!base.endsWith('/api')) {
+      base = '$base/api';
+    }
+    final path = endpoint.startsWith('/') ? endpoint : '/$endpoint';
+    return Uri.parse('$base$path');
+  }
+
   Future<dynamic> get(String endpoint) async {
     return _safeRequest(() {
-      final uri = Uri.parse('$baseUrl$endpoint');
+      final uri = _buildUri(endpoint);
       return http.get(uri, headers: _headers());
     });
   }
 
   Future<dynamic> post(String endpoint, [Map<String, dynamic>? body]) async {
     return _safeRequest(() {
-      final uri = Uri.parse('$baseUrl$endpoint');
+      final uri = _buildUri(endpoint);
       return http.post(
         uri,
         headers: _headers(),
@@ -54,7 +66,7 @@ class ApiClient {
 
   Future<dynamic> put(String endpoint, [Map<String, dynamic>? body]) async {
     return _safeRequest(() {
-      final uri = Uri.parse('$baseUrl$endpoint');
+      final uri = _buildUri(endpoint);
       return http.put(
         uri,
         headers: _headers(),
@@ -65,7 +77,7 @@ class ApiClient {
 
   Future<dynamic> patch(String endpoint, [Map<String, dynamic>? body]) async {
     return _safeRequest(() {
-      final uri = Uri.parse('$baseUrl$endpoint');
+      final uri = _buildUri(endpoint);
       return http.patch(
         uri,
         headers: _headers(),
@@ -76,7 +88,7 @@ class ApiClient {
 
   Future<dynamic> delete(String endpoint) async {
     return _safeRequest(() {
-      final uri = Uri.parse('$baseUrl$endpoint');
+      final uri = _buildUri(endpoint);
       return http.delete(uri, headers: _headers());
     });
   }
