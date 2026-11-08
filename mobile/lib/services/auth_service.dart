@@ -23,3 +23,4 @@ class AuthService {
     _client.clearAuth();
   }
 }
+

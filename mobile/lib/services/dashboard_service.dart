@@ -8,3 +8,4 @@ class DashboardService {
     return response as Map<String, dynamic>;
   }
 }
+

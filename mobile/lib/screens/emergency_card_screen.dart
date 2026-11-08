@@ -338,3 +338,4 @@ class _EmergencyCardScreenState extends State<EmergencyCardScreen> {
     );
   }
 }
+

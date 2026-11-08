@@ -9,3 +9,4 @@ class AppConstants {
   static const String appName = 'CareBridge AI';
   static const String appTagline = 'Post-Discharge Recovery & Care Coordination';
 }
+

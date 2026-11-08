@@ -45,3 +45,4 @@ class CopilotService {
     await _client.delete('/copilot/medications/$id');
   }
 }
+

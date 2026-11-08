@@ -31,3 +31,4 @@ class JourneyService {
     return JourneyTask.fromJson(response as Map<String, dynamic>);
   }
 }
+

@@ -180,3 +180,4 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
     );
   }
 }
+
