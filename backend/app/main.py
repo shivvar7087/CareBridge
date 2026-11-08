@@ -34,8 +34,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title=settings.app_name, version="0.1.0", description="Post-discharge journey coordination API", lifespan=lifespan)
-app.add_middleware(CORSMiddleware, allow_origins=settings.allowed_origins, allow_credentials=True,
-                   allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.allowed_origins,
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 for router in (auth.router, patients.router, dashboard.router, documents.router, journey.router, tasks.router,
                caregivers.router, reports.router, notifications.router, barriers.router, copilot.router):

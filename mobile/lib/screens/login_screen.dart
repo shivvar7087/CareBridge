@@ -226,6 +226,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        ActionChip(
+                          label: const Text('Render Cloud', style: TextStyle(fontSize: 11)),
+                          onPressed: () {
+                            setState(() {
+                              _serverController.text = AppConstants.defaultApiUrl;
+                              _client.baseUrl = AppConstants.defaultApiUrl;
+                            });
+                          },
+                        ),
+                        ActionChip(
+                          label: const Text('Localhost (8000)', style: TextStyle(fontSize: 11)),
+                          onPressed: () {
+                            setState(() {
+                              _serverController.text = 'http://127.0.0.1:8000/api';
+                              _client.baseUrl = 'http://127.0.0.1:8000/api';
+                            });
+                          },
+                        ),
+                        ActionChip(
+                          label: const Text('Android Emulator', style: TextStyle(fontSize: 11)),
+                          onPressed: () {
+                            setState(() {
+                              _serverController.text = AppConstants.localApiUrl;
+                              _client.baseUrl = AppConstants.localApiUrl;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ],
               ),

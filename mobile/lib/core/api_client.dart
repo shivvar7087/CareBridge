@@ -35,45 +35,68 @@ class ApiClient {
   }
 
   Future<dynamic> get(String endpoint) async {
-    final uri = Uri.parse('$baseUrl$endpoint');
-    final response = await http.get(uri, headers: _headers());
-    return _handleResponse(response);
+    return _safeRequest(() {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      return http.get(uri, headers: _headers());
+    });
   }
 
   Future<dynamic> post(String endpoint, [Map<String, dynamic>? body]) async {
-    final uri = Uri.parse('$baseUrl$endpoint');
-    final response = await http.post(
-      uri,
-      headers: _headers(),
-      body: body != null ? jsonEncode(body) : null,
-    );
-    return _handleResponse(response);
+    return _safeRequest(() {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      return http.post(
+        uri,
+        headers: _headers(),
+        body: body != null ? jsonEncode(body) : null,
+      );
+    });
   }
 
   Future<dynamic> put(String endpoint, [Map<String, dynamic>? body]) async {
-    final uri = Uri.parse('$baseUrl$endpoint');
-    final response = await http.put(
-      uri,
-      headers: _headers(),
-      body: body != null ? jsonEncode(body) : null,
-    );
-    return _handleResponse(response);
+    return _safeRequest(() {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      return http.put(
+        uri,
+        headers: _headers(),
+        body: body != null ? jsonEncode(body) : null,
+      );
+    });
   }
 
   Future<dynamic> patch(String endpoint, [Map<String, dynamic>? body]) async {
-    final uri = Uri.parse('$baseUrl$endpoint');
-    final response = await http.patch(
-      uri,
-      headers: _headers(),
-      body: body != null ? jsonEncode(body) : null,
-    );
-    return _handleResponse(response);
+    return _safeRequest(() {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      return http.patch(
+        uri,
+        headers: _headers(),
+        body: body != null ? jsonEncode(body) : null,
+      );
+    });
   }
 
   Future<dynamic> delete(String endpoint) async {
-    final uri = Uri.parse('$baseUrl$endpoint');
-    final response = await http.delete(uri, headers: _headers());
-    return _handleResponse(response);
+    return _safeRequest(() {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      return http.delete(uri, headers: _headers());
+    });
+  }
+
+  Future<dynamic> _safeRequest(Future<http.Response> Function() req) async {
+    try {
+      final response = await req();
+      return _handleResponse(response);
+    } on http.ClientException catch (e) {
+      if (e.message.toLowerCase().contains('failed to fetch')) {
+        throw ApiException(
+          'Unable to connect to $baseUrl. This happens when the Render server is waking up, or browser CORS blocks Chrome. Try Windows desktop (`flutter run -d windows`) or local server.',
+          0,
+        );
+      }
+      throw ApiException('Network error: ${e.message}', 0);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException('Connection error: $e', 0);
+    }
   }
 
   dynamic _handleResponse(http.Response response) {
