@@ -45,8 +45,8 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
       {
         'sender': 'ai',
         'text': _language == 'hi'
-            ? 'नमस्ते! मैं आपका CareBridge AI स्वास्थ्य सहायक हूँ। आज मैं आपकी दवाओं, डॉक्टर अपॉइंटमेंट या रिकवरी में कैसे मदद कर सकता हूँ?'
-            : 'Hello! I am your CareBridge AI Health Assistant. Ask me anything about your prescriptions, appointment times, or recovery tasks.',
+            ? 'नमस्ते! मैं आपका CareBridge स्वास्थ्य सहायक हूँ। आज मैं आपकी दवाओं, डॉक्टर अपॉइंटमेंट या रिकवरी में कैसे मदद कर सकता हूँ?'
+            : 'Hello! I am your CareBridge Health Assistant. Ask me anything about your prescriptions, appointment times, or recovery tasks.',
       }
     ];
   }
@@ -97,7 +97,7 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
           children: const [
             Icon(Icons.auto_awesome, color: AppColors.primary, size: 20),
             SizedBox(width: 8),
-            Text('CareBridge AI Copilot', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('CareBridge Copilot', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ],
         ),
         actions: [
@@ -228,7 +228,7 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
                   children: const [
                     SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
                     SizedBox(width: 10),
-                    Text('CareBridge AI is thinking…', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                    Text('CareBridge is thinking…', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                   ],
                 ),
               ),
@@ -273,18 +273,6 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
                     icon: const Icon(Icons.send_rounded, color: AppColors.primary),
                   ),
                 ],
-              ),
-            ),
-
-            // Team ByteCoders Footer Note
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              color: const Color(0xFFF8FAFC),
-              child: const Text(
-                'ByteCoders · IIMT Engineering College, Meerut',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, color: Color(0xFF94A3B8), fontWeight: FontWeight.w600),
               ),
             ),
           ],

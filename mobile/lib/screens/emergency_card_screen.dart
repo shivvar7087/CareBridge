@@ -395,7 +395,7 @@ class _EmergencyCardScreenState extends State<EmergencyCardScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           alignment: Alignment.center,
                           child: const Text(
-                            'CareBridge Emergency ICE · ByteCoders\nIIMT Engineering College, Meerut',
+                            'CareBridge Emergency Medical Passport',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.w500),
                           ),

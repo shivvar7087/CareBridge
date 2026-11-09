@@ -11,6 +11,6 @@ import 'package:carebridge_mobile/main.dart';
 void main() {
   testWidgets('CareBridge app launches successfully', (WidgetTester tester) async {
     await tester.pumpWidget(const CareBridgeMobileApp());
-    expect(find.text('carebridge AI'), findsOneWidget);
+    expect(find.text('CareBridge'), findsOneWidget);
   });
 }

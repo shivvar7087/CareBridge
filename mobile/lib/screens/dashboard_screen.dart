@@ -473,28 +473,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            alignment: Alignment.center,
-            child: Column(
-              children: const [
-                Text(
-                  'Team ByteCoders · IIMT Engineering College, Meerut',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  'Smart Automation · Post Discharge Healthcare Coordination System',
-                  style: TextStyle(fontSize: 9.5, color: AppColors.textMuted),
-                ),
-              ],
-            ),
-          ),
           const SizedBox(height: 24),
         ],
       ),

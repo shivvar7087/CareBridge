@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   Activity, AlertCircle, Bell, Check, Database, Download, Globe2, Heart,
-  Hospital, LockKeyhole, Phone, Printer, Save, ShieldAlert, ShieldCheck,
+  Hospital, Phone, Printer, Save, ShieldAlert, ShieldCheck,
   Sparkles, Trash2, UserRound, Volume2, Award
 } from 'lucide-react'
 import api, { errorMessage } from '../api'
@@ -50,10 +50,6 @@ export default function SettingsPage() {
     notify_caregiver_actions: true,
     audio_chimes: true,
     tts_speed: 'normal',
-    // Caregiver permissions
-    share_medication_adherence: true,
-    share_reports: true,
-    broadcast_sos_to_caregivers: true,
   })
 
   useEffect(() => {
@@ -162,7 +158,7 @@ export default function SettingsPage() {
       <PageHeading
         eyebrow="ACCOUNT & CARE PREFERENCES"
         title="Settings & Medical Configuration"
-        description="Manage clinical contacts, Emergency ICE ID card, notification alerts, and caregiver sharing permissions."
+        description="Manage clinical contacts, Emergency ICE ID card, notification alerts, and data export."
       />
 
       {message && <Notice tone="success">{message}</Notice>}
@@ -174,7 +170,6 @@ export default function SettingsPage() {
           { id: 'profile', label: '👤 Profile & Hospital', desc: 'Basic info' },
           { id: 'ice', label: '🚨 Emergency ICE ID', desc: 'Paramedic triage' },
           { id: 'notifications', label: '🔔 Reminders & Audio', desc: 'Alert schedules' },
-          { id: 'sharing', label: '🤝 Caregiver Sharing', desc: 'Privacy controls' },
           { id: 'data', label: '💾 Data & Export', desc: 'DPDP compliance' },
         ].map((tab) => (
           <button
@@ -479,72 +474,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* TAB 4: Caregiver Sharing & Privacy */}
-          {activeTab === 'sharing' && (
-            <div>
-              <div className="settings-card-head">
-                <span className="settings-icon settings-icon-green"><LockKeyhole size={19} color="#16A34A" /></span>
-                <div>
-                  <h2>Caregiver Sharing & Access Control</h2>
-                  <p>Fine-grained permissions governing what connected family caregivers can see and assist with.</p>
-                </div>
-              </div>
-
-              <form onSubmit={saveAll} className="settings-form">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#F0FDF4', borderRadius: 10, border: '1px solid #BBF7D0', cursor: 'pointer' }}>
-                    <div>
-                      <strong style={{ fontSize: 13.5, display: 'block', color: '#14532D' }}>Share Daily Medication Adherence</strong>
-                      <span style={{ fontSize: 12, color: '#166534' }}>Allows caregivers to monitor adherence streak and see if doses are taken.</span>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={preferences.share_medication_adherence}
-                      onChange={(e) => setPreferences({ ...preferences, share_medication_adherence: e.target.checked })}
-                      style={{ width: 18, height: 18 }}
-                    />
-                  </label>
-
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0', cursor: 'pointer' }}>
-                    <div>
-                      <strong style={{ fontSize: 13.5, display: 'block' }}>Share Diagnostic Lab Report Availability</strong>
-                      <span style={{ fontSize: 12, color: '#64748B' }}>Caregivers can view which reports are needed and help collect physical copies.</span>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={preferences.share_reports}
-                      onChange={(e) => setPreferences({ ...preferences, share_reports: e.target.checked })}
-                      style={{ width: 18, height: 18 }}
-                    />
-                  </label>
-
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: '#FEF2F2', borderRadius: 10, border: '1px solid #FECACA', cursor: 'pointer' }}>
-                    <div>
-                      <strong style={{ fontSize: 13.5, display: 'block', color: '#991B1B' }}>Allow Emergency SOS Alerts</strong>
-                      <span style={{ fontSize: 12, color: '#7F1D1D' }}>Broadcasts high-priority alerts to caregivers when the SOS button is triggered.</span>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={preferences.broadcast_sos_to_caregivers}
-                      onChange={(e) => setPreferences({ ...preferences, broadcast_sos_to_caregivers: e.target.checked })}
-                      style={{ width: 18, height: 18 }}
-                    />
-                  </label>
-                </div>
-
-                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: 14, borderRadius: 10, fontSize: 12, color: '#475569', lineHeight: 1.5 }}>
-                  <ShieldCheck size={16} style={{ color: '#16A34A', verticalAlign: 'middle', marginRight: 6 }} />
-                  <strong>DPDP Act Compliance:</strong> Caregiver access is read-only for clinical orders. Caregivers cannot alter prescription doses or delete clinician notes. Access can be revoked anytime from the Caregivers tab.
-                </div>
-
-                <button className="button button-primary" disabled={busy}>
-                  <Save size={15} /> {busy ? 'Saving…' : 'Save Sharing Permissions'}
-                </button>
-              </form>
-            </div>
-          )}
-
-          {/* TAB 5: Data & Export */}
+          {/* TAB 4: Data & Export */}
           {activeTab === 'data' && (
             <div>
               <div className="settings-card-head">

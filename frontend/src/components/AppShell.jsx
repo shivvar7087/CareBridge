@@ -86,10 +86,6 @@ export default function AppShell() {
         </button>
       </div>
 
-      <div className="workspace-label">
-        {user?.role === 'patient' ? 'PATIENT WORKSPACE' : 'CAREGIVER WORKSPACE'}
-      </div>
-
       <nav className="side-nav">
         {navItems
           .filter(
@@ -113,14 +109,6 @@ export default function AppShell() {
       </nav>
 
       <div className="sidebar-bottom">
-        <div className="privacy-card">
-          <ShieldCheck size={17} />
-          <div>
-            <strong>Your information</strong>
-            <span>Private & protected</span>
-          </div>
-        </div>
-
         <button
           type="button"
           className="profile-switch"

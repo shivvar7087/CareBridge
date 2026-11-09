@@ -58,12 +58,8 @@ class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
             ),
             const SizedBox(width: 8),
             const Text(
-              'carebridge',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 19, letterSpacing: -0.5),
-            ),
-            const Text(
-              ' AI',
-              style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 19),
+              'CareBridge',
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 19, letterSpacing: -0.5, color: AppColors.textDark),
             ),
           ],
         ),
