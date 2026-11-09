@@ -13,7 +13,7 @@ class CareBridgeMobileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CareBridge AI',
+      title: 'CareBridge',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const LoginScreen(),
