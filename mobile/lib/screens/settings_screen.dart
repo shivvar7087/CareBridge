@@ -315,36 +315,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   icon: const Icon(Icons.save_rounded, size: 20),
                   label: Text(_saving ? 'Saving Settings…' : 'Save All Preferences'),
                 ),
-                const SizedBox(height: 20),
-
-                // Team ByteCoders Footer
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Column(
-                    children: const [
-                      Text(
-                        'CareBridge AI · Smart Automation Edition',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textDark),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Team ByteCoders · IIMT Engineering College, Meerut',
-                        style: TextStyle(fontSize: 11.5, color: AppColors.textMuted, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Problem Statement: Post Discharge Healthcare Coordination System',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 10.5, color: AppColors.textLight),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 24),
               ],
             ),

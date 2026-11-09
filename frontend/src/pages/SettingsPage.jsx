@@ -176,7 +176,6 @@ export default function SettingsPage() {
           { id: 'notifications', label: '🔔 Reminders & Audio', desc: 'Alert schedules' },
           { id: 'sharing', label: '🤝 Caregiver Sharing', desc: 'Privacy controls' },
           { id: 'data', label: '💾 Data & Export', desc: 'DPDP compliance' },
-          { id: 'about', label: '🏆 Team ByteCoders', desc: 'About innovation' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -589,50 +588,6 @@ export default function SettingsPage() {
               </div>
             </div>
           )}
-
-          {/* TAB 6: About & Team ByteCoders */}
-          {activeTab === 'about' && (
-            <div>
-              <div className="settings-card-head">
-                <span className="settings-icon settings-icon-purple"><Award size={19} color="#7C3AED" /></span>
-                <div>
-                  <h2>Project & Innovation Details</h2>
-                  <p>Official submission metadata and clinical architecture.</p>
-                </div>
-              </div>
-
-              <div style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', padding: 16, borderRadius: 12, marginBottom: 16 }}>
-                <div style={{ fontSize: 12, fontWeight: 800, color: '#2563EB', textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                  Smart Automation Innovation
-                </div>
-                <h3 style={{ margin: '4px 0 8px', fontSize: 18, color: '#1E3A8A' }}>
-                  CareBridge AI — Post Discharge Healthcare Coordination System
-                </h3>
-                <p style={{ margin: 0, fontSize: 13, color: '#1E40AF', lineHeight: 1.5 }}>
-                  Bridging the 30-day post-hospital recovery chasm with human-in-the-loop task extraction, offline ICE medical passports, bilingual health companion, and shared family caregiver workflows.
-                </p>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
-                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: 12, borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>TEAM NAME</div>
-                  <strong style={{ fontSize: 14, color: '#0F172A' }}>ByteCoders</strong>
-                </div>
-                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: 12, borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>INSTITUTE</div>
-                  <strong style={{ fontSize: 14, color: '#0F172A' }}>IIMT Engineering College, Meerut</strong>
-                </div>
-                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: 12, borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>THEME</div>
-                  <strong style={{ fontSize: 14, color: '#0F172A' }}>Smart Automation</strong>
-                </div>
-                <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: 12, borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, color: '#64748B', fontWeight: 700 }}>CORE ENHANCEMENTS</div>
-                  <strong style={{ fontSize: 14, color: '#0F172A' }}>5 AI Capabilities</strong>
-                </div>
-              </div>
-            </div>
-          )}
         </Card>
 
         {/* Sidebar Summary Card */}
@@ -688,7 +643,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="safety-footnote" style={{ marginTop: 24 }}>
-        CareBridge AI is a clinical coordination system developed by Team ByteCoders (IIMT Engineering College, Meerut). It does not replace medical consultation. For changes to prescription treatment, consult your physician.
+        CareBridge AI is a healthcare coordination system. For changes to prescription treatment, consult your physician.
       </div>
     </div>
   )
