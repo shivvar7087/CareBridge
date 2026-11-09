@@ -118,8 +118,8 @@ export default function AppShell() {
         <div className="privacy-card">
           <ShieldCheck size={17} />
           <div>
-            <strong>Your information</strong>
-            <span>Private & protected</span>
+            <strong>ByteCoders Innovation</strong>
+            <span>IIMT Engineering College, Meerut</span>
           </div>
         </div>
 

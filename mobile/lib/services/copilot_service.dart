@@ -5,9 +5,14 @@ import '../models/medication.dart';
 class CopilotService {
   final ApiClient _client = ApiClient();
 
-  Future<String> askCopilot(String query) async {
-    final response = await _client.post('/copilot/ask', {'query': query});
+  Future<String> askCopilot(String query, {String language = 'en'}) async {
+    final response = await _client.post('/copilot/ask', {'query': query, 'language': language});
     return response['answer'] as String? ?? 'No response received.';
+  }
+
+  Future<Map<String, dynamic>> explainReport(String reportName, {String language = 'en'}) async {
+    final response = await _client.post('/copilot/explain-report', {'report_name': reportName, 'language': language});
+    return response as Map<String, dynamic>;
   }
 
   Future<EmergencyCardData> getEmergencyCard() async {

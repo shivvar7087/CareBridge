@@ -204,6 +204,64 @@ class _EmergencyCardScreenState extends State<EmergencyCardScreen> {
                         ),
                         const SizedBox(height: 14),
 
+                        // Paramedic Fast-Scan QR Passport Card
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: const Color(0xFFCBD5E1)),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.02),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fcarebridge-1-9b9i.onrender.com%2Fice%2F1',
+                                  width: 80,
+                                  height: 80,
+                                  errorBuilder: (context, error, stackTrace) => Container(
+                                    width: 80,
+                                    height: 80,
+                                    color: const Color(0xFFF1F5F9),
+                                    child: const Icon(Icons.qr_code_2, size: 48, color: AppColors.textDark),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      '⚡ FAST-TRIAGE QR (< 5s)',
+                                      style: TextStyle(
+                                        color: AppColors.danger,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 12,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'First responders can scan this code with any camera for instant triage, blood group, allergies & hospital helpline.',
+                                      style: TextStyle(color: AppColors.textMuted, fontSize: 11.5, height: 1.3),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
                         // Known Allergies Box
                         Container(
                           padding: const EdgeInsets.all(16),
@@ -330,6 +388,16 @@ class _EmergencyCardScreenState extends State<EmergencyCardScreen> {
                                     ),
                                   )),
                             ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'CareBridge Emergency ICE · ByteCoders\nIIMT Engineering College, Meerut',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.w500),
                           ),
                         ),
                         const SizedBox(height: 24),

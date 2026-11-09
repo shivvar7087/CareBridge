@@ -94,9 +94,9 @@ export default function EmergencyModal({ isOpen, onClose }) {
 
             {/* Medical Card Grid */}
             <div className="emergency-card-grid">
-              {/* Primary Identity Section */}
-              <div className="emergency-section identity-section">
-                <div className="patient-main-row">
+              {/* Primary Identity Section with QR Code */}
+              <div className="emergency-section identity-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+                <div className="patient-main-row" style={{ flex: 1, minWidth: 260 }}>
                   <div className="emergency-avatar">
                     <User size={32} />
                   </div>
@@ -111,6 +111,31 @@ export default function EmergencyModal({ isOpen, onClose }) {
                   <div className="blood-group-badge">
                     <small>BLOOD GROUP</small>
                     <strong>{patient.blood_group}</strong>
+                  </div>
+                </div>
+
+                {/* Scannable Paramedic QR Code */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#F8FAFC', border: '1px solid #CBD5E1', padding: '10px 14px', borderRadius: 12 }}>
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=84x84&data=${encodeURIComponent(`${window.location.origin}/ice/${patient.id || 1}`)}`}
+                    alt="Paramedic Fast Scan QR"
+                    style={{ width: 84, height: 84, borderRadius: 6, border: '1px solid #E2E8F0' }}
+                  />
+                  <div style={{ fontSize: 12, maxWidth: 170 }}>
+                    <strong style={{ display: 'block', color: '#DC2626', fontSize: 11, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+                      ⚡ FAST-TRIAGE QR (&lt; 5s)
+                    </strong>
+                    <span style={{ color: '#475569', fontSize: 11, lineHeight: 1.3, display: 'block', margin: '4px 0' }}>
+                      Paramedics scan with camera for instant blood group, allergies & helpline.
+                    </span>
+                    <a
+                      href={`/ice/${patient.id || 1}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: '#2563EB', fontWeight: 700, fontSize: 11, textDecoration: 'none' }}
+                    >
+                      Open Public ICE Link →
+                    </a>
                   </div>
                 </div>
               </div>
@@ -192,7 +217,7 @@ export default function EmergencyModal({ isOpen, onClose }) {
             </div>
 
             <div className="emergency-footer-note">
-              <span>Verified CareBridge Medical Passport · Last synced: {data.last_updated}</span>
+              <span>Verified CareBridge Medical Passport · ByteCoders (IIMT Engineering College, Meerut) · Last synced: {data.last_updated}</span>
             </div>
           </div>
         ) : null}

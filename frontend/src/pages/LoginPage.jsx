@@ -34,7 +34,15 @@ export default function LoginPage() {
         <button className="button button-primary full-width auth-submit" disabled={busy}>{busy ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}<ArrowRight size={17} /></button>
       </form>
       {mode === 'login' && <><div className="auth-divider"><span>OR TRY A DEMO</span></div><button className="button button-outline full-width demo-button" onClick={demoLogin} disabled={busy}><HeartHandshake size={17} /> Continue with fictional demo account</button><div className="demo-credentials">Demo: <b>demo@carebridge.ai</b> · password <b>carebridge123</b></div></>}
+      <div style={{ marginTop: 14, textAlign: 'center' }}>
+        <Link to="/ice" style={{ color: '#DC2626', fontSize: 12.5, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, background: '#FEF2F2', padding: '6px 14px', borderRadius: 8, border: '1px solid #FECACA' }}>
+          🚨 First Responders: Open Public ICE Passport (&lt; 5s) →
+        </Link>
+      </div>
       <p className="auth-switch">{mode === 'login' ? 'New to CareBridge?' : 'Already have an account?'} <button onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}>{mode === 'login' ? 'Create an account' : 'Sign in'}</button></p>
-      <div className="auth-privacy"><ShieldCheck size={15} /> Your information stays private. No external messages are sent from this demo.</div>
+      <div className="auth-privacy" style={{ textAlign: 'center', fontSize: 11.5 }}>
+        <strong>Team ByteCoders</strong> · IIMT Engineering College, Meerut<br />
+        <span style={{ color: '#64748B' }}>Smart Automation · Post Discharge Healthcare Coordination System</span>
+      </div>
     </div></div></div>
 }

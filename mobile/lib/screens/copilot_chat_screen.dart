@@ -12,21 +12,52 @@ class CopilotChatScreen extends StatefulWidget {
 class _CopilotChatScreenState extends State<CopilotChatScreen> {
   final _controller = TextEditingController();
   final _service = CopilotService();
-  final List<Map<String, String>> _messages = [
-    {
-      'sender': 'ai',
-      'text': 'Hello! I am your CareBridge AI Health Assistant. Ask me anything about your prescriptions, appointment times, or recovery tasks.',
-    }
-  ];
+  String _language = 'en';
 
-  final List<String> _chips = [
+  late List<Map<String, String>> _messages;
+
+  final List<String> _chipsEn = [
     '💊 My medication schedule',
     '📅 When is my next appointment?',
     '📋 Missing diagnostic reports?',
     '🚨 Emergency medical summary',
+    '🤝 Who are my caregivers?',
+  ];
+
+  final List<String> _chipsHi = [
+    '💊 मेरी दवाइयों का समय',
+    '📅 अगली डॉक्टर विज़िट कब है?',
+    '📋 क्या कोई रिपोर्ट बाकी है?',
+    '🚨 इमरजेंसी मेडिकल सारांश',
+    '🤝 मेरे देखभालकर्ता कौन हैं?',
   ];
 
   bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _resetMessages();
+  }
+
+  void _resetMessages() {
+    _messages = [
+      {
+        'sender': 'ai',
+        'text': _language == 'hi'
+            ? 'नमस्ते! मैं आपका CareBridge AI स्वास्थ्य सहायक हूँ। आज मैं आपकी दवाओं, डॉक्टर अपॉइंटमेंट या रिकवरी में कैसे मदद कर सकता हूँ?'
+            : 'Hello! I am your CareBridge AI Health Assistant. Ask me anything about your prescriptions, appointment times, or recovery tasks.',
+      }
+    ];
+  }
+
+  void _toggleLanguage(String lang) {
+    if (_language == lang) return;
+    setState(() {
+      _language = lang;
+      _resetMessages();
+    });
+  }
 
   Future<void> _sendMessage([String? textToSend]) async {
     final text = textToSend ?? _controller.text.trim();
@@ -39,7 +70,7 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
     });
 
     try {
-      final answer = await _service.askCopilot(text);
+      final answer = await _service.askCopilot(text, language: _language);
       if (mounted) {
         setState(() {
           _messages.add({'sender': 'ai', 'text': answer});
@@ -58,15 +89,69 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chips = _language == 'hi' ? _chipsHi : _chipsEn;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: const [
             Icon(Icons.auto_awesome, color: AppColors.primary, size: 20),
             SizedBox(width: 8),
-            Text('CareBridge AI Copilot', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+            Text('CareBridge AI Copilot', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ],
         ),
+        actions: [
+          // Language Switcher Buttons
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () => _toggleLanguage('en'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: _language == 'en' ? AppColors.primary : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'EN',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: _language == 'en' ? Colors.white : AppColors.textMuted,
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _toggleLanguage('hi'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: _language == 'hi' ? AppColors.primary : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'हिंदी',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: _language == 'hi' ? Colors.white : AppColors.textMuted,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -76,7 +161,7 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
-                children: _chips.map((chip) => Padding(
+                children: chips.map((chip) => Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ActionChip(
                         label: Text(chip, style: const TextStyle(fontSize: 12)),
@@ -102,29 +187,31 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
                     alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 12),
-                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
                       decoration: BoxDecoration(
                         color: isUser ? AppColors.primary : Colors.white,
-                        border: isUser ? null : Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(16).copyWith(
-                          bottomRight: isUser ? const Radius.circular(2) : const Radius.circular(16),
-                          bottomLeft: !isUser ? const Radius.circular(2) : const Radius.circular(16),
+                        borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(16),
+                          topRight: const Radius.circular(16),
+                          bottomLeft: Radius.circular(isUser ? 16 : 4),
+                          bottomRight: Radius.circular(isUser ? 4 : 16),
                         ),
+                        border: isUser ? null : Border.all(color: AppColors.border),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.04),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
-                          ),
+                          )
                         ],
                       ),
                       child: Text(
-                        msg['text'] ?? '',
+                        msg['text']!,
                         style: TextStyle(
                           color: isUser ? Colors.white : AppColors.textDark,
-                          fontSize: 14,
-                          height: 1.4,
+                          fontSize: 13.5,
+                          height: 1.45,
                         ),
                       ),
                     ),
@@ -133,20 +220,22 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
               ),
             ),
 
-            if (_loading) ...[
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+            if (_loading)
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
+                    SizedBox(width: 10),
+                    Text('CareBridge AI is thinking…', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                  ],
                 ),
               ),
-            ],
 
             // Input Bar
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(top: BorderSide(color: AppColors.border)),
@@ -156,22 +245,46 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: _controller,
-                      decoration: const InputDecoration(
-                        hintText: 'Ask about recovery, medications…',
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: InputDecoration(
+                        hintText: _language == 'hi'
+                            ? 'दवा, अपॉइंटमेंट या रिपोर्ट के बारे में पूछें...'
+                            : 'Ask about medicines, reports, appointments...',
+                        hintStyle: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: AppColors.border),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: AppColors.primary),
+                        ),
                       ),
                       onSubmitted: (_) => _sendMessage(),
                     ),
                   ),
                   const SizedBox(width: 8),
                   IconButton(
+                    onPressed: _loading ? null : () => _sendMessage(),
                     icon: const Icon(Icons.send_rounded, color: AppColors.primary),
-                    onPressed: () => _sendMessage(),
                   ),
                 ],
+              ),
+            ),
+
+            // Team ByteCoders Footer Note
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              color: const Color(0xFFF8FAFC),
+              child: const Text(
+                'ByteCoders · IIMT Engineering College, Meerut',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 10, color: Color(0xFF94A3B8), fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -180,4 +293,3 @@ class _CopilotChatScreenState extends State<CopilotChatScreen> {
     );
   }
 }
-

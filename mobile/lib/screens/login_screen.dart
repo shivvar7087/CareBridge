@@ -261,6 +261,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ],
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: const [
+                        Text(
+                          'Team ByteCoders · IIMT Engineering College, Meerut',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Smart Automation · Post Discharge Coordination',
+                          style: TextStyle(fontSize: 10, color: AppColors.textMuted),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

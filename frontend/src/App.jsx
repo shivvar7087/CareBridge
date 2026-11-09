@@ -11,6 +11,7 @@ import Caregivers from './pages/Caregivers'
 import Barriers from './pages/Barriers'
 import Notifications from './pages/Notifications'
 import SettingsPage from './pages/SettingsPage'
+import PublicIcePassport from './pages/PublicIcePassport'
 
 function Protected({ children }) {
   const { user, loading } = useAuth()
@@ -21,6 +22,8 @@ function Protected({ children }) {
 export default function App() {
   return <Routes>
     <Route path="/login" element={<LoginPage />} />
+    <Route path="/ice" element={<PublicIcePassport />} />
+    <Route path="/ice/:patientId" element={<PublicIcePassport />} />
     <Route path="/" element={<Protected><AppShell /></Protected>}>
       <Route index element={<Dashboard />} />
       <Route path="journey" element={<Journey />} />
