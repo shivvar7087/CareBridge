@@ -331,8 +331,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               )
                               .toList(),
                           onChanged: (val) {
-                            if (val != null)
+                            if (val != null) {
                               setState(() => _selectedLanguage = val);
+                            }
                           },
                         ),
                       ],
