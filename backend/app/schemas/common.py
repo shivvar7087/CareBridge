@@ -146,3 +146,7 @@ class ProfileUpdate(BaseModel):
     phone: str | None = None
     preferred_language: str | None = None
     hospital_name: str | None = None
+    blood_group: str | None = None
+    emergency_contact_name: str | None = None
+    emergency_contact_phone: str | None = None
+    settings_json: str | None = None

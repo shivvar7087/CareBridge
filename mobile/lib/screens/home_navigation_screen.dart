@@ -7,6 +7,7 @@ import 'tasks_screen.dart';
 import 'medications_screen.dart';
 import 'copilot_chat_screen.dart';
 import 'emergency_card_screen.dart';
+import 'settings_screen.dart';
 import 'login_screen.dart';
 
 class HomeNavigationScreen extends StatefulWidget {
@@ -73,6 +74,15 @@ class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const EmergencyCardScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined, color: AppColors.textDark),
+            tooltip: 'Settings & Emergency ID',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
               );
             },
           ),

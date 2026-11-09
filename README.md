@@ -120,7 +120,6 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 
 # Launch API server
-python -m uvicorn app.main:app --reload --port 8000
 ```
 
 - API Server: `http://127.0.0.1:8000`

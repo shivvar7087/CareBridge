@@ -105,6 +105,14 @@ def _build_emergency_data(db: Session, patient: User, profile: Optional[PatientP
             "Paracetamol 650mg - As needed for pain (Max 3/day)",
         ]
 
+    if profile and profile.emergency_contact_name and profile.emergency_contact_phone:
+        caregiver_list.insert(0, {
+            "name": profile.emergency_contact_name,
+            "email": "emergency.contact@family.care",
+            "phone": profile.emergency_contact_phone,
+            "relation": "Designated Emergency Contact",
+        })
+
     return {
         "patient": {
             "id": patient.id,
@@ -112,7 +120,7 @@ def _build_emergency_data(db: Session, patient: User, profile: Optional[PatientP
             "email": patient.email,
             "phone": profile.phone if profile and profile.phone else "+91 98100 23456",
             "date_of_birth": profile.date_of_birth.isoformat() if profile and profile.date_of_birth else "1988-06-15",
-            "blood_group": "B+ Positive",
+            "blood_group": getattr(profile, "blood_group", None) or "B+ Positive",
             "allergies": ["Penicillin (Moderate rash / anaphylactoid)", "NSAIDs (Mild gastric distress)"],
             "chronic_conditions": ["Essential Hypertension", "Type-2 Diabetes Mellitus (Controlled)"],
             "hospital_name": profile.hospital_name if profile and profile.hospital_name else "Harborview Medical Centre",

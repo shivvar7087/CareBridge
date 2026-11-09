@@ -3,7 +3,14 @@ from sqlalchemy.engine import Engine
 
 
 SQLITE_ADDITIONS = {
-    "patient_profiles": {"created_at": "DATETIME", "updated_at": "DATETIME"},
+    "patient_profiles": {
+        "created_at": "DATETIME",
+        "updated_at": "DATETIME",
+        "blood_group": "VARCHAR(20)",
+        "emergency_contact_name": "VARCHAR(160)",
+        "emergency_contact_phone": "VARCHAR(40)",
+        "settings_json": "TEXT",
+    },
     "caregiver_relationships": {"updated_at": "DATETIME"},
     "documents": {"consent_at": "DATETIME"},
     "extracted_document_data": {"created_at": "DATETIME", "updated_at": "DATETIME"},
