@@ -67,6 +67,6 @@ export default function Journey() {
       </div>
     })}</div>}
     {openAdd && <AddTaskForm onClose={() => setOpenAdd(false)} onSaved={() => { setOpenAdd(false); load() }} />}
-    <div className="safety-footnote">CareBridge AI keeps the original instruction on file. Changes to clinician instructions are flagged for verification.</div>
+    <div className="safety-footnote">CareBridge keeps the original instruction on file. Changes to clinician instructions are flagged for verification.</div>
   </div>
 }

@@ -52,7 +52,7 @@ for router in (auth.router, patients.router, dashboard.router, documents.router,
 def root():
     return {
         "service": settings.app_name,
-        "message": "CareBridge AI API is running.",
+        "message": "CareBridge API is running.",
         "docs": "/docs",
         "health": "/api/health",
     }
@@ -60,4 +60,4 @@ def root():
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "service": "CareBridge AI API", "demo_mode": settings.demo_mode}
+    return {"status": "ok", "service": "CareBridge API", "demo_mode": settings.demo_mode}

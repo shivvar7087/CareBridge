@@ -235,7 +235,7 @@ export default function Dashboard() {
         {data.caregiver_activity.length ? <div className="care-activity-list">{data.caregiver_activity.slice(0, 3).map((activity) => <div className="care-activity-row" key={activity.task_id}><span className="caregiver-mini-avatar"><UserRound size={13} /></span><div><strong>{activity.caregiver_name}</strong><small>{activity.task_title}</small></div><StatusBadge status={activity.status} /></div>)}</div> : <div className="care-empty"><p>{summary.caregiver_count ? 'No caregiver tasks have been assigned yet.' : 'Connect a caregiver to share selected journey tasks.'}</p><Link to="/caregivers" className="button button-secondary">Manage caregivers <ArrowRight size={15} /></Link></div>}
       </Card>
     </div>
-    <div className="dashboard-footnote">CareBridge AI helps organize clinician-provided instructions. It does not diagnose or replace your healthcare team.</div>
+    <div className="dashboard-footnote">CareBridge helps organize clinician-provided instructions. It does not diagnose or replace your healthcare team.</div>
     <MedicationScheduleModal
       isOpen={scheduleModalOpen}
       onClose={() => setScheduleModalOpen(false)}

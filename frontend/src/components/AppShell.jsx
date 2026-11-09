@@ -76,9 +76,7 @@ export default function AppShell() {
         <span className="brand-mark">
           <Activity size={21} strokeWidth={2.6} />
         </span>
-        <span>
-          carebridge<span className="brand-ai"> AI</span>
-        </span>
+        <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: -0.5 }}>CareBridge</span>
         <button
           className="mobile-close"
           onClick={() => setMobileOpen(false)}
@@ -118,8 +116,8 @@ export default function AppShell() {
         <div className="privacy-card">
           <ShieldCheck size={17} />
           <div>
-            <strong>ByteCoders Innovation</strong>
-            <span>IIMT Engineering College, Meerut</span>
+            <strong>Your information</strong>
+            <span>Private & protected</span>
           </div>
         </div>
 

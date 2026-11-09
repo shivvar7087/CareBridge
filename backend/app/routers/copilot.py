@@ -128,7 +128,6 @@ def _build_emergency_data(db: Session, patient: User, profile: Optional[PatientP
             "hospital_helpline": "+91 11 2658 8500",
             "organ_donor": True,
             "emergency_notes": "Patient carries an emergency inhaler and medical alert bracelet. Zero NSAIDs.",
-            "team_badge": "ByteCoders · IIMT Engineering College, Meerut",
         },
         "caregivers": caregiver_list,
         "medications": meds,
@@ -614,7 +613,7 @@ def copilot_ask(data: QuestionInput, db: Session = Depends(get_db), user: User =
         first_name = patient.full_name.split()[0]
         if is_hindi:
             response_text = (
-                f"नमस्ते {first_name}! 👋 मैं आपका CareBridge AI स्वास्थ्य सहायक हूँ।\n\n"
+                f"नमस्ते {first_name}! 👋 मैं आपका CareBridge स्वास्थ्य सहायक हूँ।\n\n"
                 f"आज की आपकी रिकवरी का संक्षिप्त विवरण:\n"
                 f"• **सक्रिय कार्य:** {len(pending_tasks)} लंबित ({len(overdue_tasks)} अतिदेय)\n"
                 f"• **अगला अपॉइंटमेंट:** {appointments[0].title if appointments else 'सभी कार्य समय पर हैं'}\n"
@@ -623,7 +622,7 @@ def copilot_ask(data: QuestionInput, db: Session = Depends(get_db), user: User =
             )
         else:
             response_text = (
-                f"Hello {first_name}! 👋 I am your CareBridge AI Health Assistant.\n\n"
+                f"Hello {first_name}! 👋 I am your CareBridge Health Assistant.\n\n"
                 f"Here is a quick snapshot of your care plan today:\n"
                 f"• **Active Tasks:** {len(pending_tasks)} pending ({len(overdue_tasks)} overdue)\n"
                 f"• **Next Scheduled Milestone:** {appointments[0].title if appointments else 'All current milestones cleared'}\n"
@@ -636,6 +635,5 @@ def copilot_ask(data: QuestionInput, db: Session = Depends(get_db), user: User =
         "language": "hi" if is_hindi else "en",
         "answer": response_text,
         "timestamp": datetime.utcnow().isoformat(),
-        "disclaimer": "CareBridge AI organizes clerical records and instructions. It does not replace clinical consultation.",
-        "team_credit": "ByteCoders · IIMT Engineering College, Meerut",
+        "disclaimer": "CareBridge organizes clerical records and instructions. It does not replace clinical consultation.",
     }

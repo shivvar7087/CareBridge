@@ -705,7 +705,7 @@ export default function Documents() {
                     </div>
                     <h3>Analyze Document with AI</h3>
                     <p>
-                      CareBridge AI will securely parse clinician instructions, follow-up appointments, and required lab reports into an editable draft for your review.
+                      CareBridge will securely parse clinician instructions, follow-up appointments, and required lab reports into an editable draft for your review.
                     </p>
 
                     <label className="analysis-consent-label">
@@ -1050,7 +1050,7 @@ export default function Documents() {
       )}
 
       <div className="safety-footnote">
-        Safety Notice: Extracted content is an assistive draft. CareBridge AI does not diagnose, prescribe, or override clinical directives.
+        Safety Notice: Extracted content is an assistive draft. CareBridge does not diagnose, prescribe, or override clinical directives.
       </div>
     </div>
   )

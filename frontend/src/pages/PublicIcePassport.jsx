@@ -35,7 +35,6 @@ export default function PublicIcePassport() {
             hospital_helpline: '+91 11 2658 8500',
             organ_donor: true,
             emergency_notes: 'Patient carries an emergency inhaler and medical alert bracelet. Zero NSAIDs.',
-            team_badge: 'ByteCoders · IIMT Engineering College, Meerut',
           },
           caregivers: [
             { name: 'Priya Sharma', relation: 'Family Caregiver', phone: '+91 98765 43210', email: 'priya.demo@carebridge.ai' },
@@ -212,7 +211,7 @@ export default function PublicIcePassport() {
           <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, fontSize: 12, color: '#64748B' }}>
             <div>
               <CheckCircle2 size={14} style={{ verticalAlign: 'middle', color: '#16A34A', marginRight: 4 }} />
-              CareBridge Verified Medical Record · Team ByteCoders (IIMT Engineering College, Meerut)
+              CareBridge Verified Medical Record · Confidential Clinical Document
             </div>
             <div>Last Synced: {data.last_updated}</div>
           </div>

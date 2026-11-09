@@ -136,7 +136,7 @@ export default function SettingsPage() {
       patient: profile,
       preferences,
       exported_at: new Date().toISOString(),
-      platform: 'CareBridge AI · Team ByteCoders (IIMT Engineering College, Meerut)',
+      platform: 'CareBridge AI',
     }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -589,61 +589,10 @@ export default function SettingsPage() {
             </div>
           )}
         </Card>
-
-        {/* Sidebar Summary Card */}
-        <div className="settings-side">
-          <Card>
-            <div className="settings-card-head">
-              <span className="settings-icon settings-icon-green"><LockKeyhole size={19} /></span>
-              <div>
-                <h3>Privacy and access</h3>
-                <p>Your journey is private unless you share it.</p>
-              </div>
-            </div>
-            <div className="setting-detail">
-              <ShieldCheck size={15} />
-              <span>Caregiver access can be revoked at any time.</span>
-            </div>
-            <div className="setting-detail">
-              <Database size={15} />
-              <span>Dual SQLite / PostgreSQL compliant storage.</span>
-            </div>
-            <div className="setting-detail">
-              <ShieldAlert size={15} color="#DC2626" />
-              <span>Emergency ICE Passport active (<a href={`/ice/${profile.id || 1}`} target="_blank" rel="noreferrer" style={{ color: '#2563EB', fontWeight: 600 }}>Preview</a>).</span>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="settings-card-head">
-              <span className="settings-icon settings-icon-purple"><Globe2 size={19} /></span>
-              <div>
-                <h3>Workspace Details</h3>
-                <p>{user.role === 'patient' ? 'Patient workspace' : 'Caregiver workspace'}</p>
-              </div>
-            </div>
-            <div className="workspace-detail">
-              <span>Blood Group</span>
-              <strong style={{ color: '#DC2626' }}>{preferences.blood_group}</strong>
-            </div>
-            <div className="workspace-detail">
-              <span>Notifications</span>
-              <strong>In-app & Scheduled</strong>
-            </div>
-            <div className="workspace-detail">
-              <span>Bilingual AI</span>
-              <strong>English & हिंदी</strong>
-            </div>
-            <div className="workspace-detail">
-              <span>Demo Mode</span>
-              <strong>{profile.is_demo ? 'Active (Fictional)' : 'Off'}</strong>
-            </div>
-          </Card>
-        </div>
       </div>
 
       <div className="safety-footnote" style={{ marginTop: 24 }}>
-        CareBridge AI is a healthcare coordination system. For changes to prescription treatment, consult your physician.
+        CareBridge is a healthcare coordination system. For changes to prescription treatment, consult your physician.
       </div>
     </div>
   )

@@ -24,7 +24,7 @@ export default function AiCopilotDrawer({ openEmergencyModal }) {
   const [messages, setMessages] = useState([
     {
       sender: 'ai',
-      text: 'Hello! I am your CareBridge AI Health Assistant. How can I help coordinate your care plan, appointments, or prescriptions today?',
+      text: 'Hello! I am your CareBridge Health Assistant. How can I help coordinate your care plan, appointments, or prescriptions today?',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ])
@@ -44,8 +44,8 @@ export default function AiCopilotDrawer({ openEmergencyModal }) {
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang)
     const greeting = newLang === 'hi'
-      ? 'नमस्ते! मैं आपका CareBridge AI स्वास्थ्य सहायक हूँ। आज मैं आपकी दवाओं, डॉक्टर अपॉइंटमेंट या रिकवरी यात्रा में कैसे मदद कर सकता हूँ?'
-      : 'Hello! I am your CareBridge AI Health Assistant. How can I help coordinate your care plan, appointments, or prescriptions today?'
+      ? 'नमस्ते! मैं आपका CareBridge स्वास्थ्य सहायक हूँ। आज मैं आपकी दवाओं, डॉक्टर अपॉइंटमेंट या रिकवरी यात्रा में कैसे मदद कर सकता हूँ?'
+      : 'Hello! I am your CareBridge Health Assistant. How can I help coordinate your care plan, appointments, or prescriptions today?'
     setMessages((prev) => [
       ...prev,
       {
@@ -145,13 +145,13 @@ export default function AiCopilotDrawer({ openEmergencyModal }) {
       <button
         className={`copilot-floating-btn ${isOpen ? 'active' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Open CareBridge AI Assistant"
+        aria-label="Open CareBridge Assistant"
       >
         <span className="copilot-btn-icon">
           <Sparkles size={20} />
         </span>
         <span className="copilot-btn-text">
-          {language === 'hi' ? 'AI से पूछें (हिंदी/EN)' : 'Ask CareBridge AI'}
+          {language === 'hi' ? 'CareBridge से पूछें (हिंदी/EN)' : 'Ask CareBridge'}
         </span>
         <span className="copilot-pulse-ring" />
       </button>
@@ -165,7 +165,7 @@ export default function AiCopilotDrawer({ openEmergencyModal }) {
                 <Bot size={20} />
               </div>
               <div>
-                <strong>CareBridge AI Copilot</strong>
+                <strong>CareBridge Copilot</strong>
                 <span className="copilot-status">
                   <span className="status-dot-pulse" /> Active · Bilingual (EN/हिंदी)
                 </span>
@@ -303,7 +303,7 @@ export default function AiCopilotDrawer({ openEmergencyModal }) {
           </form>
 
           <div style={{ padding: '6px 16px 10px', fontSize: 10.5, color: '#94A3B8', textAlign: 'center', background: '#fff', borderTop: '1px solid #F1F5F9' }}>
-            CareBridge AI · Team ByteCoders (IIMT Engineering College, Meerut)
+            CareBridge Health Assistant · Secure & Context-Aware
           </div>
         </div>
       )}

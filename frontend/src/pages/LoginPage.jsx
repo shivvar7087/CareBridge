@@ -21,11 +21,11 @@ export default function LoginPage() {
   }
   async function demoLogin() { setError(''); setBusy(true); try { await login({ email: 'demo@carebridge.ai', password: 'carebridge123' }) } catch (e) { setError(errorMessage(e)) } finally { setBusy(false) } }
 
-  return <div className="auth-screen"><div className="auth-visual"><div className="auth-brand"><span className="brand-mark"><Activity size={21} /></span>carebridge<span className="brand-ai"> AI</span></div>
+  return <div className="auth-screen"><div className="auth-visual"><div className="auth-brand"><span className="brand-mark"><Activity size={21} /></span>CareBridge</div>
     <div className="visual-content"><div className="visual-tag"><Sparkles size={14} /> CARE COORDINATION, MADE CLEAR</div><h1>Your next steps,<br /><em>all in one place.</em></h1><p>Bring care plans, appointments, reports, and the people who support you together in one calm, organized workspace.</p>
       <div className="journey-preview"><div className="preview-heading"><span>YOUR CARE JOURNEY</span><span className="preview-dot" /> ACTIVE</div><div className="preview-step done"><span className="preview-node"><span>✓</span></span><div><strong>Hospital discharge</strong><small>Care plan received</small></div><span className="preview-date">DONE</span></div><div className="preview-step current"><span className="preview-node"><span>2</span></span><div><strong>Collect blood test report</strong><small>Shared with your caregiver</small></div><span className="preview-date">NEXT</span></div><div className="preview-step"><span className="preview-node"><span>3</span></span><div><strong>Follow-up appointment</strong><small>Friday, 14 November</small></div></div></div>
       <div className="visual-foot"><ShieldCheck size={17} /><span>Designed to help organize care instructions, not replace your care team.</span></div></div></div>
-    <div className="auth-panel"><div className="auth-form-wrap"><div className="mobile-auth-brand"><span className="brand-mark"><Activity size={21} /></span>carebridge<span className="brand-ai"> AI</span></div><div className="auth-kicker">WELCOME TO CAREBRIDGE</div><h2>{mode === 'login' ? 'Sign in to your account' : 'Create your account'}</h2><p className="auth-subtitle">{mode === 'login' ? 'Your healthcare journey is ready when you are.' : 'Set up a secure space for your care journey.'}</p>
+    <div className="auth-panel"><div className="auth-form-wrap"><div className="mobile-auth-brand"><span className="brand-mark"><Activity size={21} /></span>CareBridge</div><div className="auth-kicker">WELCOME TO CAREBRIDGE</div><h2>{mode === 'login' ? 'Sign in to your account' : 'Create your account'}</h2><p className="auth-subtitle">{mode === 'login' ? 'Your healthcare journey is ready when you are.' : 'Set up a secure space for your care journey.'}</p>
       {error && <div className="form-error">{error}</div>}
       <form onSubmit={submit} className="auth-form">
         {mode === 'register' && <><label className="field"><span>Full name</span><input required minLength="2" value={form.full_name} onChange={(e) => change('full_name', e.target.value)} placeholder="Your name" /></label><label className="field"><span>Account type</span><select value={form.role} onChange={(e) => change('role', e.target.value)}><option value="patient">Patient</option><option value="caregiver">Caregiver</option></select></label>{form.role === 'caregiver' && <label className="field"><span>Invitation code</span><input required value={form.invite_code} onChange={(e) => change('invite_code', e.target.value)} placeholder="Code from the patient" /></label>}</>}
@@ -40,9 +40,6 @@ export default function LoginPage() {
         </Link>
       </div>
       <p className="auth-switch">{mode === 'login' ? 'New to CareBridge?' : 'Already have an account?'} <button onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}>{mode === 'login' ? 'Create an account' : 'Sign in'}</button></p>
-      <div className="auth-privacy" style={{ textAlign: 'center', fontSize: 11.5 }}>
-        <strong>Team ByteCoders</strong> · IIMT Engineering College, Meerut<br />
-        <span style={{ color: '#64748B' }}>Smart Automation · Post Discharge Healthcare Coordination System</span>
-      </div>
+      <div className="auth-privacy"><ShieldCheck size={15} /> Your information stays private. No external messages are sent from this demo.</div>
     </div></div></div>
 }

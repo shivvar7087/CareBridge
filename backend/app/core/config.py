@@ -19,7 +19,7 @@ _read_local_env()
 
 class Settings:
     def __init__(self):
-        self.app_name = os.getenv("APP_NAME", "CareBridge AI")
+        self.app_name = os.getenv("APP_NAME", "CareBridge")
         self.secret_key = os.getenv("SECRET_KEY", "local-development-key-change-before-deployment")
         self.database_url = os.getenv("DATABASE_URL", "sqlite:///./carebridge.db")
         self.upload_dir = os.getenv("UPLOAD_DIR", "./uploads")

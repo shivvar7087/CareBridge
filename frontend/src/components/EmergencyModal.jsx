@@ -217,7 +217,7 @@ export default function EmergencyModal({ isOpen, onClose }) {
             </div>
 
             <div className="emergency-footer-note">
-              <span>Verified CareBridge Medical Passport · ByteCoders (IIMT Engineering College, Meerut) · Last synced: {data.last_updated}</span>
+              <span>Verified CareBridge Medical Passport · Last synced: {data.last_updated}</span>
             </div>
           </div>
         ) : null}

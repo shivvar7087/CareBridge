@@ -6,7 +6,7 @@ class AppConstants {
   static const String demoEmail = 'demo@carebridge.ai';
   static const String demoPassword = 'carebridge123';
 
-  static const String appName = 'CareBridge AI';
+  static const String appName = 'CareBridge';
   static const String appTagline = 'Post-Discharge Recovery & Care Coordination';
 }
 
